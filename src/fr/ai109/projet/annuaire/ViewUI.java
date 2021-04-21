@@ -1,14 +1,16 @@
 package fr.ai109.projet.annuaire;
 
-import java.awt.TextField;
 
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -36,8 +38,8 @@ public class ViewUI extends Application{//test
 		primaryStage.setWidth(1600);
 		primaryStage.setHeight(1000);
 
-		VBox root = new VBox(0);   //3 boxes piled up: user interface, Table view, one simple pane with "export pdf" btn
-		Scene scene = new Scene(root,1600,1000);
+		VBox primaryRoot = new VBox(0);   //3 boxes piled up: user interface, Table view, one simple pane with "export pdf" btn
+		Scene scene = new Scene(primaryRoot,1600,1000);
 		primaryStage.setScene(scene);
 		primaryStage.sizeToScene();
 
@@ -60,19 +62,23 @@ public class ViewUI extends Application{//test
 		Label batchNb = new Label("NUM PROMOTION");
 		Label year = new Label("ANNEE");
 
-
-		TextField firstNameT = new TextField();
 		TextField lastNameT = new TextField();
+		TextField firstNameT = new TextField();
 		TextField zipCodeT = new TextField();
 		TextField batchT = new TextField();
 		TextField batchNbT = new TextField();
 		TextField yearT = new TextField();
 
-		//topView.addRow(0, add, lastName, lastNameT);
+		topView.addRow(0, add, lastName, lastNameT);
+		topView.addRow(1, delete, firstName,firstNameT);
+		topView.addRow(2,update, zipCode,zipCodeT);
+		topView.addRow(3, search, batch,batchT);
+		topView.addRow(4, showAll, batchNb,batchNbT);
+		topView.addRow(5, help, year,yearT);
+		topView.setHgap(200);
+		topView.setVgap(50);
 
 		//2nd Vbox tableView
-
-
 
 
 		TableView<Trainee> tableView = new TableView<Trainee>();//(observableTrainee);
@@ -116,14 +122,53 @@ public class ViewUI extends Application{//test
 
 
 
-		root.getChildren().addAll(topView,tableView,bottomView);
+		primaryRoot.getChildren().addAll(topView,tableView,bottomView);
 
 
 
 
 		Stage helpStage = new Stage();  //show() when help btn clicked (for user documentation)
+		helpStage.setTitle("NOTICE D'UTILISATION DU LOGICIEL");
+		helpStage.setWidth(1600);
+		helpStage.setHeight(1000);
+		Pane helpRoot = new Pane();   
+		Scene helpScene = new Scene(helpRoot,800,400);
+		helpStage.setScene(helpScene);
+		helpStage.sizeToScene();
+		Label lbl = new Label("Voici comment utiliser ce logiciel");
+		helpRoot.getChildren().addAll(lbl);
+		
 		Stage passwordStage = new Stage();//show() when update/delete btn clicked (admin mode)
 		passwordStage.setResizable(false);
+		
+		delete.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				passwordStage.show();
+
+			}
+		});
+		
+		update.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				passwordStage.show();
+
+			}
+		});
+		
+		help.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				helpStage.show();
+
+			}
+		});
+		
+		
 
 
 
