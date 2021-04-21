@@ -4,16 +4,20 @@ public class Trainee {
 	
 	private String lastName;
 	private String firstName;
-	private int postCode;
+	private String postCode;
 	private String promo;
 	private int promoNumber;
 	private int year;
-	
+	private long positionInFileLeft;
+	private long positionInFileright;
+
 	public Trainee() {
 		
 	}
 
-	public Trainee(String lastName, String firstName, int postCode, String promo, int promoNumber, int year) {
+
+
+	public Trainee(String lastName, String firstName, String postCode, String promo, int promoNumber, int year) {
 		super();
 		this.lastName = lastName;
 		this.firstName = firstName;
@@ -25,21 +29,22 @@ public class Trainee {
 
 	@Override
 	public String toString() {
-		return "Trainee [lastName=" + lastName + ", firstName=" + firstName + ", postCode=" + postCode + ", promo="
-				+ promo + ", promoNumber=" + promoNumber + ", year=" + year + "]";
+		return lastName + " " + firstName + " " + postCode + " "
+				+ promo + " " + promoNumber + " " + year;
+	}
+
+	public Trainee stringToObject(String traineeString) {
+		
+		String[] tab = traineeString.split(" ");
+		Trainee trainee = new Trainee(tab[0], tab[1], tab[2], tab[3], Integer.parseInt(tab[4]), Integer.parseInt(tab[5]));
+		return trainee;
+		
 	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-		result = prime * result + postCode;
-		result = prime * result + ((promo == null) ? 0 : promo.hashCode());
-		result = prime * result + promoNumber;
-		result = prime * result + year;
-		return result;
+		// TODO Auto-generated method stub
+		return super.hashCode();
 	}
 
 	@Override
@@ -91,11 +96,11 @@ public class Trainee {
 		this.firstName = firstName;
 	}
 
-	public int getPostCode() {
+	public String getPostCode() {
 		return postCode;
 	}
 
-	public void setPostCode(int postCode) {
+	public void setPostCode(String postCode) {
 		this.postCode = postCode;
 	}
 
@@ -122,5 +127,30 @@ public class Trainee {
 	public void setYear(int year) {
 		this.year = year;
 	}
+
+
+
+	public long getPositionInFileLeft() {
+		return positionInFileLeft;
+	}
+
+
+
+	public void setPositionInFileLeft(long positionInFileLeft) {
+		this.positionInFileLeft = positionInFileLeft;
+	}
+
+
+
+	public long getPositionInFileright() {
+		return positionInFileright;
+	}
+
+
+
+	public void setPositionInFileright(long positionInFileright) {
+		this.positionInFileright = positionInFileright;
+	}
 	
+
 }
