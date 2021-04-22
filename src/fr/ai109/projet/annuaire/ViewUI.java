@@ -53,6 +53,7 @@ public class ViewUI extends Application{//test
 
 		//1st VBox topView=user interface= hBox with GridPane on the left and BorderPane with icon on the right
 		BorderPane topViewRight = new BorderPane();
+		topViewRight.setStyle("-fx-background-color:papayawhip");
 		ImageView iv = new ImageView(getClass().getResource("icon.png").toString());
 		topViewRight.setCenter(iv);
 		topViewRight.setMinWidth(400);
@@ -60,21 +61,28 @@ public class ViewUI extends Application{//test
 		
 
 		GridPane topViewLeft = new GridPane();
+		topViewLeft.setStyle("-fx-background-color:papayawhip");
 		topViewLeft.setMinHeight(500);
 		topViewLeft.setMinWidth(1200);
 
 		Button add = new Button("ADD");
 		add.setFont(new Font("Cambria",16));
-		Button delete = new Button("DELETE");
-		delete.setFont(new Font("Cambria",16));
-		Button update = new Button("UPDATE");
-		update.setFont(new Font("Cambria",16));
+		add.setStyle("-fx-background-color:peru");
+		Button showAll = new Button("SHOW ALL");
+		showAll.setFont(new Font("Cambria",16));
+		showAll.setStyle("-fx-background-color:peru");
 		Button search = new Button("SEARCH");
 		search.setFont(new Font("Cambria",16));
-		Button showAll= new Button("SHOW ALL");
-		showAll.setFont(new Font("Cambria",16));
+		search.setStyle("-fx-background-color:peru");
+		Button update = new Button("UPDATE");
+		update.setFont(new Font("Cambria",16));
+		update.setStyle("-fx-background-color:orange");
+		Button delete= new Button("DELETE");
+		delete.setFont(new Font("Cambria",16));
+		delete.setStyle("-fx-background-color:orange");
 		Button help = new Button("HELP");
 		help.setFont(new Font("Cambria",16));
+		help.setStyle("-fx-background-color:red");
 
 		Label titre = new Label("BIENVENUE DANS L'ANNUAIRE EQL");
 		titre.setFont(new Font("Cambria",26));
@@ -153,9 +161,11 @@ public class ViewUI extends Application{//test
 		Pane bottomView = new Pane();
 		bottomView.setMinHeight(100);
 		bottomView.setMinWidth(1600);
+		bottomView.setStyle("-fx-background-color:papayawhip");
 
 		Button export = new Button("EXPORT TO PDF");
 		export.setFont(new Font("Cambria",16));
+		export.setStyle("-fx-background-color:peru");
 		bottomView.getChildren().addAll(export);
 
 
@@ -196,6 +206,7 @@ public class ViewUI extends Application{//test
 			@Override
 			public void handle(ActionEvent event) {
 				passwordStage.show();
+				//if adminTf == password, déclencher l'action
 
 			}
 		});
@@ -205,6 +216,7 @@ public class ViewUI extends Application{//test
 			@Override
 			public void handle(ActionEvent event) {
 				passwordStage.show();
+				//if adminTf == password, déclencher l'action
 
 			}
 		});
