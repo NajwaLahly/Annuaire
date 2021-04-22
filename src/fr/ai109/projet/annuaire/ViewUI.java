@@ -2,9 +2,13 @@ package fr.ai109.projet.annuaire;
 
 
 
+import java.util.List;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -13,10 +17,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 
@@ -45,27 +51,48 @@ public class ViewUI extends Application{//test
 		primaryStage.setScene(scene);
 		primaryStage.sizeToScene();
 
-		//1st VBox topView=user interface
-		GridPane topView = new GridPane();
-		topView.setMinHeight(500);
-		topView.setMinWidth(1600);
+		//1st VBox topView=user interface= hBox with GridPane on the left and BorderPane with icon on the right
+		BorderPane topViewRight = new BorderPane();
+		ImageView iv = new ImageView(getClass().getResource("icon.png").toString());
+		topViewRight.setCenter(iv);
+		topViewRight.setMinWidth(400);
+		topViewRight.setMinHeight(500);
+		
+
+		GridPane topViewLeft = new GridPane();
+		topViewLeft.setMinHeight(500);
+		topViewLeft.setMinWidth(1200);
 
 		Button add = new Button("ADD");
+		add.setFont(new Font("Cambria",16));
 		Button delete = new Button("DELETE");
+		delete.setFont(new Font("Cambria",16));
 		Button update = new Button("UPDATE");
+		update.setFont(new Font("Cambria",16));
 		Button search = new Button("SEARCH");
+		search.setFont(new Font("Cambria",16));
 		Button showAll= new Button("SHOW ALL");
+		showAll.setFont(new Font("Cambria",16));
 		Button help = new Button("HELP");
+		help.setFont(new Font("Cambria",16));
 
-		Label titre = new Label("BIENVENUE DANS L'ANNUAIRE DE L'ECOLE QL");
-		ImageView iv = new ImageView(getClass().getResource("icon.png").toString());
+		Label titre = new Label("BIENVENUE DANS L'ANNUAIRE EQL");
+		titre.setFont(new Font("Cambria",26));
+		
+		
 		
 		Label lastName = new Label("NOM");
+		lastName.setFont(new Font("Cambria",16));
 		Label firstName = new Label("PRENOM");
+		firstName.setFont(new Font("Cambria",16));
 		Label zipCode = new Label("DEPARTEMENT");
+		zipCode.setFont(new Font("Cambria",16));
 		Label batch = new Label("PROMOTION");
+		batch.setFont(new Font("Cambria",16));
 		Label batchNb = new Label("NUM PROMOTION");
+		batchNb.setFont(new Font("Cambria",16));
 		Label year = new Label("ANNEE");
+		year.setFont(new Font("Cambria",16));
 
 		TextField lastNameT = new TextField();
 		TextField firstNameT = new TextField();
@@ -74,15 +101,19 @@ public class ViewUI extends Application{//test
 		TextField batchNbT = new TextField();
 		TextField yearT = new TextField();
 		
-		topView.addRow(0,titre);
-		topView.addRow(1, add, lastName, lastNameT);
-		topView.addRow(2, delete, firstName,firstNameT);
-		topView.addRow(3,update, zipCode,zipCodeT,iv);
-		topView.addRow(4, search, batch,batchT);
-		topView.addRow(5, showAll, batchNb,batchNbT);
-		topView.addRow(6, help, year,yearT);
-		topView.setHgap(200);
-		topView.setVgap(50);
+		
+		topViewLeft.addRow(0,titre);
+		topViewLeft.addRow(1, add, lastName, lastNameT);
+		topViewLeft.addRow(2, delete, firstName,firstNameT);
+		topViewLeft.addRow(3,update, zipCode,zipCodeT);
+		topViewLeft.addRow(4, search, batch,batchT);
+		topViewLeft.addRow(5, showAll, batchNb,batchNbT);
+		topViewLeft.addRow(6, help, year,yearT);
+		topViewLeft.setHgap(100);;//comment ça marche?
+		topViewLeft.setVgap(45);
+		
+		HBox topView = new HBox(0);
+		topView.getChildren().addAll(topViewLeft,topViewRight);
 
 		//2nd Vbox tableView
 
@@ -124,6 +155,7 @@ public class ViewUI extends Application{//test
 		bottomView.setMinWidth(1600);
 
 		Button export = new Button("EXPORT TO PDF");
+		export.setFont(new Font("Cambria",16));
 		bottomView.getChildren().addAll(export);
 
 
@@ -145,18 +177,20 @@ public class ViewUI extends Application{//test
 		helpRoot.getChildren().addAll(lbl);
 		
 		Stage passwordStage = new Stage();//passwordStage show() when update/delete btn clicked (admin mode)
-		passwordStage.setTitle("ADMIN MODE");
 		passwordStage.setWidth(200);
 		passwordStage.setHeight(200);
 		VBox passwordRoot = new VBox(50);
 		Label admin = new Label("Entrez le mot de passe admin");
 		admin.setMinWidth(200);
+		admin.setWrapText(true);//ça marche pas
 		TextField adminTf = new TextField();
 		passwordRoot.getChildren().addAll(admin,adminTf);
 		Scene passwordScene = new Scene(passwordRoot,300,200);
 		passwordStage.setScene(passwordScene);
 		passwordStage.setResizable(false);
 		
+		
+		//pressing delete button opens new password window
 		delete.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -165,7 +199,7 @@ public class ViewUI extends Application{//test
 
 			}
 		});
-		
+		//pressing update button opens password window
 		update.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -174,7 +208,7 @@ public class ViewUI extends Application{//test
 
 			}
 		});
-		
+		//pressing help button opens documentation window
 		help.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -183,11 +217,16 @@ public class ViewUI extends Application{//test
 
 			}
 		});
+		//pressing export button creates pdf of current tableview
+		export.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				//TODO
+
+			}
+		});
 		
-		
-
-
-
 		primaryStage.show();
 	}
 }
