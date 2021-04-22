@@ -89,8 +89,6 @@ public class ViewUI extends Application{
 		zipCode.setFont(new Font("Cambria",16));
 		Label batch = new Label("PROMOTION");
 		batch.setFont(new Font("Cambria",16));
-		Label batchNb = new Label("NUM PROMOTION");
-		batchNb.setFont(new Font("Cambria",16));
 		Label year = new Label("ANNEE");
 		year.setFont(new Font("Cambria",16));
 
@@ -107,8 +105,8 @@ public class ViewUI extends Application{
 		topViewLeft.addRow(2, delete, firstName,firstNameT);
 		topViewLeft.addRow(3,update, zipCode,zipCodeT);
 		topViewLeft.addRow(4, search, batch,batchT);
-		topViewLeft.addRow(5, showAll, batchNb,batchNbT);
-		topViewLeft.addRow(6, help, year,yearT);
+		topViewLeft.addRow(5, showAll, year,yearT);
+		topViewLeft.addRow(6, help);
 		topViewLeft.setHgap(100);;//comment ça marche?
 		topViewLeft.setVgap(45);
 		
@@ -134,14 +132,11 @@ public class ViewUI extends Application{
 		TableColumn<Trainee, Integer> colPromo = new TableColumn<Trainee, Integer>("PROMOTION");
 		colPromo.setCellValueFactory(new PropertyValueFactory<Trainee, Integer>("promo"));
 
-		TableColumn<Trainee, Integer> colPromoNb = new TableColumn<Trainee, Integer>("NUM PROMOTION");
-		colPromoNb.setCellValueFactory(new PropertyValueFactory<Trainee, Integer>("promoNumber"));
-
 		TableColumn<Trainee, Integer> colYear = new TableColumn<Trainee, Integer>("ANNEE");
 		colYear.setCellValueFactory(new PropertyValueFactory<Trainee, Integer>("year"));
 
 		//Donner la colonne a notre tableview
-		tableView.getColumns().addAll(colLastName,colFirstName,colpostCode,colPromo,colPromoNb,colYear);
+		tableView.getColumns().addAll(colLastName,colFirstName,colpostCode,colPromo,colYear);
 
 		//Ajuster la taille du tableau a son contenu
 		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
