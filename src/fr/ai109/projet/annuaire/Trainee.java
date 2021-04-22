@@ -6,79 +6,38 @@ public class Trainee {
 	private String firstName;
 	private String postCode;
 	private String promo;
-	private int promoNumber;
 	private int year;
-	private long positionInFileLeft;
-	private long positionInFileright;
 
+	
 	public Trainee() {
 		
 	}
 
 
-
-	public Trainee(String lastName, String firstName, String postCode, String promo, int promoNumber, int year) {
+	public Trainee(String lastName, String firstName, String postCode, String promo, int year) {
 		super();
 		this.lastName = lastName;
 		this.firstName = firstName;
 		this.postCode = postCode;
 		this.promo = promo;
-		this.promoNumber = promoNumber;
 		this.year = year;
 	}
 
 	@Override
 	public String toString() {
-		return lastName + " " + firstName + " " + postCode + " "
-				+ promo + " " + promoNumber + " " + year;
+		return lastName + "\t" + firstName + "\t" + postCode + "\t"
+				+ promo + "\t" + year;
 	}
 
 	public Trainee stringToObject(String traineeString) {
 		
-		String[] tab = traineeString.split(" ");
-		Trainee trainee = new Trainee(tab[0], tab[1], tab[2], tab[3], Integer.parseInt(tab[4]), Integer.parseInt(tab[5]));
+		String[] tab = traineeString.split("\t");
+		Trainee trainee = new Trainee(tab[0], tab[1], tab[2], tab[3], Integer.parseInt(tab[4]));
 		return trainee;
 		
 	}
 
-	@Override
-	public int hashCode() {
-		// TODO Auto-generated method stub
-		return super.hashCode();
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Trainee other = (Trainee) obj;
-		if (firstName == null) {
-			if (other.firstName != null)
-				return false;
-		} else if (!firstName.equals(other.firstName))
-			return false;
-		if (lastName == null) {
-			if (other.lastName != null)
-				return false;
-		} else if (!lastName.equals(other.lastName))
-			return false;
-		if (postCode != other.postCode)
-			return false;
-		if (promo == null) {
-			if (other.promo != null)
-				return false;
-		} else if (!promo.equals(other.promo))
-			return false;
-		if (promoNumber != other.promoNumber)
-			return false;
-		if (year != other.year)
-			return false;
-		return true;
-	}
+	
 
 	public String getLastName() {
 		return lastName;
@@ -112,14 +71,6 @@ public class Trainee {
 		this.promo = promo;
 	}
 
-	public int getPromoNumber() {
-		return promoNumber;
-	}
-
-	public void setPromoNumber(int promoNumber) {
-		this.promoNumber = promoNumber;
-	}
-
 	public int getYear() {
 		return year;
 	}
@@ -128,29 +79,5 @@ public class Trainee {
 		this.year = year;
 	}
 
-
-
-	public long getPositionInFileLeft() {
-		return positionInFileLeft;
-	}
-
-
-
-	public void setPositionInFileLeft(long positionInFileLeft) {
-		this.positionInFileLeft = positionInFileLeft;
-	}
-
-
-
-	public long getPositionInFileright() {
-		return positionInFileright;
-	}
-
-
-
-	public void setPositionInFileright(long positionInFileright) {
-		this.positionInFileright = positionInFileright;
-	}
-	
 
 }

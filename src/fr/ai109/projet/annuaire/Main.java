@@ -18,11 +18,19 @@ public class Main {
 			RandomAccessFile raf = new RandomAccessFile(binaryfile, "rw");
 			BufferedReader reader = new BufferedReader(new FileReader(originPath));
 			BinaryTreeToFile binaryTreeToFile = new BinaryTreeToFile();
-			//binaryTreeToFile.originFileToDestinationFile(reader, raf);
-			Trainee trainee = binaryTreeToFile.getTraineeFromSourceFile(reader);
-			//System.out.println(binaryTreeToFile.getRoot());
-			binaryTreeToFile.insertTrainee(trainee, raf, reader);
-			//System.out.println(trainee.getPositionInFile());
+			binaryTreeToFile.originFileToDestinationFile(reader, raf);
+//     		Trainee trainee1 = binaryTreeToFile.getTraineeFromSourceFile(reader);
+//			binaryTreeToFile.insertTrainee(trainee1, raf, reader);
+//			binaryTreeToFile.readCurrentChildPos(raf, 28, 8);
+			//System.out.println(trainee);
+			
+			//binaryTreeToFile.readTraineeInDestFile(raf, 0);
+//			Trainee trainee2 = binaryTreeToFile.getTraineeFromSourceFile(reader);
+//			binaryTreeToFile.insertTrainee(trainee2, raf, reader);
+//			System.out.println(binaryTreeToFile.readCurrentChildPos(raf, 28, 0));
+//			for(long idx: BinaryTreeToFile.startIdx) {
+//				System.out.println(idx);
+//			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
