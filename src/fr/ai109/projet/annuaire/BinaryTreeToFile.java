@@ -126,7 +126,6 @@ public class BinaryTreeToFile {
 			}
 			else {
 				raf.seek(idxEndCurrent);
-				System.out.println(getStartPosTrainee());
 				raf.writeLong(getStartPosTrainee());
 				raf.seek(getEndPosTrainee());
 

@@ -20,6 +20,7 @@ public class Main {
 			BinaryTreeToFile binaryTreeToFile = new BinaryTreeToFile();
 			Trainee trainee = new Trainee();
 			TraineeDao traineeDao = new TraineeDao();
+			binaryTreeToFile.originFileToDestinationFile(reader, raf);
 			traineeDao.getAll(raf, trainee, binaryTreeToFile);
 			for(Trainee traineeCurrent : traineeDao.traineeList) {
 					System.out.println(traineeCurrent);
