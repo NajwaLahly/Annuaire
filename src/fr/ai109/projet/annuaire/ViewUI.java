@@ -1,6 +1,13 @@
 package fr.ai109.projet.annuaire;
 
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,12 +32,36 @@ import javafx.stage.Stage;
 
 public class ViewUI extends Application{
 
-
+	public String imagePath = "icon.png";
 
 	public static void main(String[] args) {
 		launch(args);
 
 	}
+	
+	static String originPath = "stagiaires.txt";
+	static String destinationPath = "BinaryTreeFile.txt";
+	
+	public static ArrayList<Trainee> fileData () { //changer le nom!!
+		// TODO Auto-generated method stub
+		File binaryfile = new File(destinationPath);
+		Trainee trainee = new Trainee();
+		TraineeDao traineeDao = new TraineeDao();
+		try {
+			//revoir new file pour originePath
+			RandomAccessFile raf = new RandomAccessFile(binaryfile, "rw");
+			BufferedReader reader = new BufferedReader(new FileReader(originPath));
+			BinaryTreeToFile binaryTreeToFile = new BinaryTreeToFile();
+			
+			binaryTreeToFile.originFileToDestinationFile(reader, raf);
+			traineeDao.getAll(raf, trainee, binaryTreeToFile);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return traineeDao.traineeList;
+	}	
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -48,11 +79,11 @@ public class ViewUI extends Application{
 		//1st VBox topView=user interface= hBox with GridPane on the left and BorderPane with icon on the right
 		BorderPane topViewRight = new BorderPane();
 		topViewRight.setStyle("-fx-background-color:papayawhip");
-		ImageView iv = new ImageView(getClass().getResource("icon.png").toString());
+		ImageView iv = new ImageView(getClass().getResource(imagePath).toString());
 		topViewRight.setCenter(iv);
 		topViewRight.setMinWidth(400);
 		topViewRight.setMinHeight(500);
-		
+
 
 		GridPane topViewLeft = new GridPane();
 		topViewLeft.setStyle("-fx-background-color:bisque");
@@ -80,9 +111,9 @@ public class ViewUI extends Application{
 
 		Label titre = new Label("BIENVENUE DANS L'ANNUAIRE EQL");
 		titre.setFont(new Font("Cambria",26));
-		
-		
-		
+
+
+
 		Label lastName = new Label("NOM");
 		lastName.setFont(new Font("Cambria",16));
 		Label firstName = new Label("PRENOM");
@@ -98,10 +129,9 @@ public class ViewUI extends Application{
 		TextField firstNameT = new TextField();
 		TextField zipCodeT = new TextField();
 		TextField batchT = new TextField();
-		TextField batchNbT = new TextField();
 		TextField yearT = new TextField();
-		
-		
+
+
 		topViewLeft.addRow(0,titre);
 		topViewLeft.addRow(1, add, lastName, lastNameT);
 		topViewLeft.addRow(2, delete, firstName,firstNameT);
@@ -109,19 +139,18 @@ public class ViewUI extends Application{
 		topViewLeft.addRow(4, search, batch,batchT);
 		topViewLeft.addRow(5, showAll, year,yearT);
 		topViewLeft.addRow(6, help);
-		topViewLeft.setHgap(100);;//comment Ã§a marche?
+		topViewLeft.setHgap(100);;//comment ça marche?
 		topViewLeft.setVgap(45);
-		
+
 		HBox topView = new HBox(0);
 		topView.getChildren().addAll(topViewLeft,topViewRight);
 
 		//2nd Vbox tableView
-		
-		
-		//TraineeDao dao = new TraineeDao();
-		//ObservableList<Trainee> observableTrainees = FXCollections.observableArrayList(dao.getAll());
 
-		TableView<Trainee> tableView = new TableView<Trainee>();//observableTrainees
+		ObservableList<Trainee> observableTrainees = FXCollections.observableArrayList(fileData());
+
+
+		TableView<Trainee> tableView = new TableView<Trainee>(observableTrainees);//observableTrainees
 		tableView.setMinHeight(400);
 		tableView.setMinWidth(1600);
 
@@ -179,7 +208,7 @@ public class ViewUI extends Application{
 		Label lbl = new Label("This superb software is pretty much self-explaining!");
 		lbl.setFont(new Font("Cambria",16));
 		helpRoot.getChildren().addAll(lbl);
-		
+
 		Stage passwordStage = new Stage();//passwordStage show() when update/delete btn clicked (admin mode)
 		passwordStage.setWidth(200);
 		passwordStage.setHeight(200);
@@ -194,8 +223,8 @@ public class ViewUI extends Application{
 		Scene passwordScene = new Scene(passwordRoot,300,200);
 		passwordStage.setScene(passwordScene);
 		passwordStage.setResizable(false);
-		
-		
+
+
 		//pressing delete button opens new password window
 		delete.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -234,7 +263,7 @@ public class ViewUI extends Application{
 
 			}
 		});
-		
+
 		primaryStage.show();
 	}
 }

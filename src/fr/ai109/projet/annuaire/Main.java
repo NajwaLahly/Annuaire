@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.RandomAccessFile;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class Main {
 	
 	static String originPath = "stagiaires.txt";
@@ -20,12 +23,14 @@ public class Main {
 			BinaryTreeToFile binaryTreeToFile = new BinaryTreeToFile();
 			Trainee trainee = new Trainee();
 			TraineeDao traineeDao = new TraineeDao();
+			ViewUI  viewUI = new ViewUI();
 			binaryTreeToFile.originFileToDestinationFile(reader, raf);
 			traineeDao.getAll(raf, trainee, binaryTreeToFile);
 			for(Trainee traineeCurrent : traineeDao.traineeList) {
 					System.out.println(traineeCurrent);
 				}
-
+			viewUI.main(args);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
