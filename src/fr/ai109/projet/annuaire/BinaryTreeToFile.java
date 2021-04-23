@@ -9,9 +9,7 @@ public class BinaryTreeToFile {
 
 	public static Trainee root = new Trainee();
 	public static long idxEndRoot;
-	//public static ArrayList<Long> startIdx = new ArrayList<Long>();	
-	//public static ArrayList<Long> endIdx = new ArrayList<Long>();	
-	private int nbreByteToRead = 8;
+	public static int nbreByteToRead = 8;
 	public static long startPosTrainee = 0;
 	public static long endPosTrainee = 0;
 	//get a trainee node
@@ -25,8 +23,7 @@ public class BinaryTreeToFile {
 			String firstName = reader.readLine();
 			String postCode = reader.readLine();
 			String promo = reader.readLine();
-			String[] tab = promo.split(" ");
-			promo = tab[0];
+			
 			int year = Integer.parseInt(reader.readLine());
 			trainee = new Trainee(lastName, firstName, postCode, promo, year);
 			reader.readLine();
@@ -56,23 +53,13 @@ public class BinaryTreeToFile {
 		long startPosTraineeInFile = 0;
 		long endPosTraineeInFile = 0;
 		try {
-			//startPosTraineeInFile = raf.getFilePointer();
-			//startIdx.add(startPosTraineeInFile);
 			String trainAddSep = trainee.toString() +"*";
 			byte[] byteCurrentTrainee = trainAddSep.getBytes();
 			raf.write(byteCurrentTrainee);
-			//endPosTraineeInFile = raf.getFilePointer();
-			//endIdx.add(endPosTraineeInFile);
-
-
 			long start = 0;
 			long end = 0;
-			//byte[] byteStart = ByteBuffer.allocate(Long.BYTES).putLong(start).array();
-			//byte[] byteStart = Integer.getBytes();
 			raf.writeLong(start);			
 			raf.writeLong(end);
-			System.out.println("apres firse insert "+raf.getFilePointer());
-
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -91,15 +78,10 @@ public class BinaryTreeToFile {
 			setEndPosTrainee(raf.getFilePointer());
 			while(reader.ready()) {
 				Trainee traineeCurrent = getTraineeFromSourceFile(reader);
-				System.out.println("pos raf "+ raf.getFilePointer());
-
 				setStartPosTrainee(getEndPosTrainee());
-				System.out.println(getStartPosTrainee());
 				raf.seek(getStartPosTrainee());
 				insertTrainee(traineeCurrent, raf, reader);	
 				setEndPosTrainee(raf.getFilePointer());
-				System.out.println("2 eme insert "+raf.getFilePointer());
-
 				insertTraineeAsChild(getRoot(), traineeCurrent, raf);
 			}
 		} catch (IOException e) {
@@ -126,10 +108,6 @@ public class BinaryTreeToFile {
 				}
 				else {
 					posCurrentChildLong = readCurrentChildPos(raf, idxEndCurrent, 0);
-					System.out.println("idxEndCurrent "+idxEndCurrent);
-					System.out.println("apres lecture left "+ raf.getFilePointer());
-					System.out.println("posleft "+ posCurrentChildLong);
-
 					//read right child object
 				}
 
@@ -140,7 +118,6 @@ public class BinaryTreeToFile {
 					idxEndCurrent = Long.parseLong(resultatReadInFile[1]);
 					//current = current.R/L
 					current = trainee.stringToObject(CurrentChildString);
-					System.out.println("current   " + current);
 				}
 			}
 			if(parent.toString().compareToIgnoreCase(trainee.toString()) < 0) {
@@ -149,7 +126,6 @@ public class BinaryTreeToFile {
 			}
 			else {
 				raf.seek(idxEndCurrent);
-				System.out.println(getStartPosTrainee());
 				raf.writeLong(getStartPosTrainee());
 				raf.seek(getEndPosTrainee());
 
@@ -172,10 +148,8 @@ public class BinaryTreeToFile {
 		long posCurrentChildLong = 0;
 		try {
 			raf.seek(idxCurrent + sideLR);
-
 			posCurrentChildLong = raf.readLong();
-			System.out.println(posCurrentChildLong);
-
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -233,7 +207,6 @@ public class BinaryTreeToFile {
 		}
 		resultat[0] = resultatString;
 		resultat[1] = new Long(resultatLong).toString();
-		System.out.println("apres root "+resultat[1]);
 		return resultat;
 		//insert trainee Byte in correct pos (algo insert in binary Tree)--> arg (data)
 	}
