@@ -2,6 +2,8 @@ package fr.ai109.projet.annuaire;
 
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -53,7 +55,7 @@ public class ViewUI extends Application{
 		
 
 		GridPane topViewLeft = new GridPane();
-		topViewLeft.setStyle("-fx-background-color:papayawhip");
+		topViewLeft.setStyle("-fx-background-color:bisque");
 		topViewLeft.setMinHeight(500);
 		topViewLeft.setMinWidth(1200);
 
@@ -114,9 +116,12 @@ public class ViewUI extends Application{
 		topView.getChildren().addAll(topViewLeft,topViewRight);
 
 		//2nd Vbox tableView
+		
+		
+		//TraineeDao dao = new TraineeDao();
+		//ObservableList<Trainee> observableTrainees = FXCollections.observableArrayList(dao.getAll());
 
-
-		TableView<Trainee> tableView = new TableView<Trainee>();//(observableTrainee);
+		TableView<Trainee> tableView = new TableView<Trainee>();//observableTrainees
 		tableView.setMinHeight(400);
 		tableView.setMinWidth(1600);
 
@@ -166,18 +171,22 @@ public class ViewUI extends Application{
 		helpStage.setTitle("NOTICE D'UTILISATION DU LOGICIEL");
 		helpStage.setWidth(1600);
 		helpStage.setHeight(1000);
-		Pane helpRoot = new Pane();   
+		Pane helpRoot = new Pane(); 
+		helpRoot.setStyle("-fx-background-color:papayawhip");
 		Scene helpScene = new Scene(helpRoot,800,400);
 		helpStage.setScene(helpScene);
 		helpStage.sizeToScene();
-		Label lbl = new Label("Voici comment utiliser ce logiciel");
+		Label lbl = new Label("This superb software is pretty much self-explaining!");
+		lbl.setFont(new Font("Cambria",16));
 		helpRoot.getChildren().addAll(lbl);
 		
 		Stage passwordStage = new Stage();//passwordStage show() when update/delete btn clicked (admin mode)
 		passwordStage.setWidth(200);
 		passwordStage.setHeight(200);
 		VBox passwordRoot = new VBox(50);
-		Label admin = new Label("Entrez le mot de passe admin");
+		passwordRoot.setStyle("-fx-background-color:orange");
+		Label admin = new Label("Entrez le mot de passe administrateur");
+		admin.setFont(new Font("Cambria",16));
 		admin.setMinWidth(200);
 		admin.setWrapText(true);//ça marche pas
 		TextField adminTf = new TextField();
@@ -193,7 +202,7 @@ public class ViewUI extends Application{
 			@Override
 			public void handle(ActionEvent event) {
 				passwordStage.show();
-				//if adminTf == password, déclencher l'action
+				//if adminTf == password, set on action, delete Trainee
 
 			}
 		});
@@ -203,7 +212,7 @@ public class ViewUI extends Application{
 			@Override
 			public void handle(ActionEvent event) {
 				passwordStage.show();
-				//if adminTf == password, déclencher l'action
+				//if adminTf == password, set on action, update trainee
 
 			}
 		});
