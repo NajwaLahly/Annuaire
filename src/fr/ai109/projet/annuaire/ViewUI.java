@@ -1,13 +1,13 @@
 package fr.ai109.projet.annuaire;
 
 
+
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
-import java.util.List;
-
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,15 +33,52 @@ import javafx.stage.Stage;
 public class ViewUI extends Application{
 
 	public String imagePath = "icon.png";
+	static String originPath = "stagiaires.txt";
+	static String destinationPath = "BinaryTreeFile.txt";
+	private BorderPane primaryRoot = new BorderPane();
+	private HBox topView = new HBox(0);
+	private Pane bottomView = new Pane();
 
 	public static void main(String[] args) {
 		launch(args);
 
 	}
-	
-	static String originPath = "stagiaires.txt";
-	static String destinationPath = "BinaryTreeFile.txt";
-	
+
+
+	private void refresh(ObservableList<Trainee> obs) {
+		primaryRoot.setCenter(getTable(obs));
+	}
+
+
+	private TableView<Trainee> getTable(ObservableList<Trainee> observableTrainees) {
+		TableView<Trainee> tableView = new TableView<Trainee>(observableTrainees);
+		tableView.setMinHeight(400);
+		tableView.setMinWidth(1600);
+
+		TableColumn<Trainee, String> colLastName = new TableColumn<Trainee, String>("NOM");
+		colLastName.setCellValueFactory(new PropertyValueFactory<Trainee, String>("lastName"));
+
+		TableColumn<Trainee, String> colFirstName = new TableColumn<Trainee, String>("PRENOM");
+		colFirstName.setCellValueFactory(new PropertyValueFactory<Trainee, String>("firstName"));
+
+		TableColumn<Trainee, Integer> colpostCode = new TableColumn<Trainee, Integer>("DEPARTEMENT");
+		colpostCode.setCellValueFactory(new PropertyValueFactory<Trainee, Integer>("postCode"));
+
+		TableColumn<Trainee, Integer> colPromo = new TableColumn<Trainee, Integer>("PROMOTION");
+		colPromo.setCellValueFactory(new PropertyValueFactory<Trainee, Integer>("promo"));
+
+		TableColumn<Trainee, Integer> colYear = new TableColumn<Trainee, Integer>("ANNEE");
+		colYear.setCellValueFactory(new PropertyValueFactory<Trainee, Integer>("year"));
+
+		//Donner la colonne a notre tableview
+		tableView.getColumns().addAll(colLastName,colFirstName,colpostCode,colPromo,colYear);
+
+		//Ajuster la taille du tableau a son contenu
+		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		return tableView;
+	}
+
+
 	public static ArrayList<Trainee> fileData () { //changer le nom!!
 		// TODO Auto-generated method stub
 		File binaryfile = new File(destinationPath);
@@ -52,10 +89,13 @@ public class ViewUI extends Application{
 			RandomAccessFile raf = new RandomAccessFile(binaryfile, "rw");
 			BufferedReader reader = new BufferedReader(new FileReader(originPath));
 			BinaryTreeToFile binaryTreeToFile = new BinaryTreeToFile();
-			
-			binaryTreeToFile.originFileToDestinationFile(reader, raf);
+
+			//binaryTreeToFile.originFileToDestinationFile(reader, raf);
 			traineeDao.getAll(raf, trainee, binaryTreeToFile);
-			
+			traineeDao.sortTreeInOrder(raf, trainee,binaryTreeToFile);
+			for(Trainee t:TraineeDao.sortedTree) {
+				System.out.println(t);
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -71,7 +111,7 @@ public class ViewUI extends Application{
 		primaryStage.setWidth(1600);
 		primaryStage.setHeight(1000);
 
-		VBox primaryRoot = new VBox(0);   //3 boxes piled up: user interface, Table view, one simple pane with "export pdf" btn
+		//3 boxes piled up: user interface, Table view, one simple pane with "export pdf" btn
 		Scene scene = new Scene(primaryRoot,1600,1000);
 		primaryStage.setScene(scene);
 		primaryStage.sizeToScene();
@@ -93,9 +133,9 @@ public class ViewUI extends Application{
 		Button add = new Button("ADD");
 		add.setFont(new Font("Cambria",16));
 		add.setStyle("-fx-background-color:peru");
-		Button showAll = new Button("SHOW ALL");
-		showAll.setFont(new Font("Cambria",16));
-		showAll.setStyle("-fx-background-color:peru");
+		Button showSorted = new Button("SHOW SORTED LIST");
+		showSorted.setFont(new Font("Cambria",16));
+		showSorted.setStyle("-fx-background-color:peru");
 		Button search = new Button("SEARCH");
 		search.setFont(new Font("Cambria",16));
 		search.setStyle("-fx-background-color:peru");
@@ -137,49 +177,23 @@ public class ViewUI extends Application{
 		topViewLeft.addRow(2, delete, firstName,firstNameT);
 		topViewLeft.addRow(3,update, zipCode,zipCodeT);
 		topViewLeft.addRow(4, search, batch,batchT);
-		topViewLeft.addRow(5, showAll, year,yearT);
+		topViewLeft.addRow(5, showSorted, year,yearT);
 		topViewLeft.addRow(6, help);
 		topViewLeft.setHgap(100);;//comment ça marche?
 		topViewLeft.setVgap(45);
 
-		HBox topView = new HBox(0);
+
 		topView.getChildren().addAll(topViewLeft,topViewRight);
 
 		//2nd Vbox tableView
 
 		ObservableList<Trainee> observableTrainees = FXCollections.observableArrayList(fileData());
-
-
-		TableView<Trainee> tableView = new TableView<Trainee>(observableTrainees);//observableTrainees
-		tableView.setMinHeight(400);
-		tableView.setMinWidth(1600);
-
-		TableColumn<Trainee, String> colLastName = new TableColumn<Trainee, String>("NOM");
-		colLastName.setCellValueFactory(new PropertyValueFactory<Trainee, String>("lastName"));
-
-		TableColumn<Trainee, String> colFirstName = new TableColumn<Trainee, String>("PRENOM");
-		colFirstName.setCellValueFactory(new PropertyValueFactory<Trainee, String>("firstName"));
-
-		TableColumn<Trainee, Integer> colpostCode = new TableColumn<Trainee, Integer>("DEPARTEMENT");
-		colpostCode.setCellValueFactory(new PropertyValueFactory<Trainee, Integer>("postCode"));
-
-		TableColumn<Trainee, Integer> colPromo = new TableColumn<Trainee, Integer>("PROMOTION");
-		colPromo.setCellValueFactory(new PropertyValueFactory<Trainee, Integer>("promo"));
-
-		TableColumn<Trainee, Integer> colYear = new TableColumn<Trainee, Integer>("ANNEE");
-		colYear.setCellValueFactory(new PropertyValueFactory<Trainee, Integer>("year"));
-
-		//Donner la colonne a notre tableview
-		tableView.getColumns().addAll(colLastName,colFirstName,colpostCode,colPromo,colYear);
-
-		//Ajuster la taille du tableau a son contenu
-		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
+		TableView<Trainee> tableView = getTable(observableTrainees);
 
 
 		//3rd VBox pane with export pdf btn
 
-		Pane bottomView = new Pane();
+
 		bottomView.setMinHeight(100);
 		bottomView.setMinWidth(1600);
 		bottomView.setStyle("-fx-background-color:papayawhip");
@@ -189,11 +203,9 @@ public class ViewUI extends Application{
 		export.setStyle("-fx-background-color:peru");
 		bottomView.getChildren().addAll(export);
 
-
-
-		primaryRoot.getChildren().addAll(topView,tableView,bottomView);
-
-
+		primaryRoot.setTop(topView);
+		primaryRoot.setCenter(tableView);
+		primaryRoot.setBottom(bottomView);
 
 
 		Stage helpStage = new Stage();  //helpStage show() when help btn clicked (for user documentation)
@@ -205,7 +217,9 @@ public class ViewUI extends Application{
 		Scene helpScene = new Scene(helpRoot,800,400);
 		helpStage.setScene(helpScene);
 		helpStage.sizeToScene();
-		Label lbl = new Label("This superb software is pretty much self-explaining!");
+		Label lbl = new Label("This superb software is pretty much self-explaining!\n It is working "
+				+ "on our computer, if it's not working on yours, blame your computer."
+				+ "\n When you request an alphabetical list, it will pop, snackle and snap.");
 		lbl.setFont(new Font("Cambria",16));
 		helpRoot.getChildren().addAll(lbl);
 
@@ -223,6 +237,17 @@ public class ViewUI extends Application{
 		Scene passwordScene = new Scene(passwordRoot,300,200);
 		passwordStage.setScene(passwordScene);
 		passwordStage.setResizable(false);
+
+		//pressing add button
+
+		add.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				Trainee newTrainee = new Trainee(lastNameT.getText(),firstNameT.getText(),zipCodeT.getText(),batchT.getText(),Integer.parseInt(yearT.getText()));
+				observableTrainees.add(newTrainee);
+				TraineeDao.addTraineeInRaf(newTrainee);
+			}
+		});
 
 
 		//pressing delete button opens new password window
@@ -245,6 +270,33 @@ public class ViewUI extends Application{
 
 			}
 		});
+		//pressing show sorted list button changes TableView
+		showSorted.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				Trainee trainee = new Trainee();
+				TraineeDao traineeDao = new TraineeDao();
+				BinaryTreeToFile bf = new BinaryTreeToFile();
+				RandomAccessFile raf;
+				
+				try {
+					raf = new RandomAccessFile(destinationPath, "rw");
+					traineeDao.sortTreeInOrder(raf, trainee,bf);//
+					for(Trainee t:TraineeDao.sortedTree) {
+						System.out.println(t);
+					}
+					ObservableList<Trainee> obs = FXCollections.observableArrayList(TraineeDao.sortedTree);
+					refresh(obs);
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		});
+
+
 		//pressing help button opens documentation window
 		help.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -266,4 +318,5 @@ public class ViewUI extends Application{
 
 		primaryStage.show();
 	}
+
 }

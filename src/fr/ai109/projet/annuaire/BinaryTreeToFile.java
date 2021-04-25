@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-
 public class BinaryTreeToFile {
 
 	public static Trainee root = new Trainee();
@@ -12,6 +11,7 @@ public class BinaryTreeToFile {
 	public static int nbreByteToRead = 8;
 	public static long startPosTrainee = 0;
 	public static long endPosTrainee = 0;
+	
 	//get a trainee node
 	//lire ligne fichier
 	//create trainee object
@@ -23,7 +23,7 @@ public class BinaryTreeToFile {
 			String firstName = reader.readLine();
 			String postCode = reader.readLine();
 			String promo = reader.readLine();
-			
+
 			int year = Integer.parseInt(reader.readLine());
 			trainee = new Trainee(lastName, firstName, postCode, promo, year);
 			reader.readLine();
@@ -49,9 +49,8 @@ public class BinaryTreeToFile {
 		BinaryTreeToFile.endPosTrainee = endPosTrainee;
 	}
 
-	public void insertTrainee(Trainee trainee, RandomAccessFile raf, BufferedReader reader) {
-		long startPosTraineeInFile = 0;
-		long endPosTraineeInFile = 0;
+	public void insertTrainee(Trainee trainee, RandomAccessFile raf) {
+
 		try {
 			String trainAddSep = trainee.toString() +"*";
 			byte[] byteCurrentTrainee = trainAddSep.getBytes();
@@ -72,7 +71,7 @@ public class BinaryTreeToFile {
 
 		try {
 			Trainee trainee = getTraineeFromSourceFile(reader);
-			insertTrainee(trainee, raf, reader);		
+			insertTrainee(trainee, raf);		
 			setRoot(raf);
 			raf.seek(raf.getFilePointer() + nbreByteToRead*2);
 			setEndPosTrainee(raf.getFilePointer());
@@ -80,7 +79,7 @@ public class BinaryTreeToFile {
 				Trainee traineeCurrent = getTraineeFromSourceFile(reader);
 				setStartPosTrainee(getEndPosTrainee());
 				raf.seek(getStartPosTrainee());
-				insertTrainee(traineeCurrent, raf, reader);	
+				insertTrainee(traineeCurrent, raf);	
 				setEndPosTrainee(raf.getFilePointer());
 				insertTraineeAsChild(getRoot(), traineeCurrent, raf);
 			}
@@ -94,6 +93,7 @@ public class BinaryTreeToFile {
 	public void insertTraineeAsChild(Trainee root, Trainee trainee, RandomAccessFile raf) {
 		Trainee parent = new Trainee();
 		Trainee current = new Trainee();
+		setRoot(raf);
 		current = root;
 		long idxEndCurrent = idxEndRoot;
 		String[] resultatReadInFile =new String[2];
@@ -149,7 +149,7 @@ public class BinaryTreeToFile {
 		try {
 			raf.seek(idxCurrent + sideLR);
 			posCurrentChildLong = raf.readLong();
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -178,12 +178,6 @@ public class BinaryTreeToFile {
 		}	
 	}
 
-	public Trainee getRoot() {
-		return root;
-	}
-	public long getIdxEndRoot() {
-		return idxEndRoot;
-	}
 
 	public String[] readTraineeInDestFile(RandomAccessFile raf, long seekPos) {
 		String[] resultat = new String[2];
@@ -211,12 +205,22 @@ public class BinaryTreeToFile {
 		//insert trainee Byte in correct pos (algo insert in binary Tree)--> arg (data)
 	}
 
+	
+
+
 	public static long getStartPosTrainee() {
 		return startPosTrainee;
 	}
 
 	public static void setStartPosTrainee(long startPosTrainee) {
 		BinaryTreeToFile.startPosTrainee = startPosTrainee;
+	}
+
+	public Trainee getRoot() {
+		return root;
+	}
+	public long getIdxEndRoot() {
+		return idxEndRoot;
 	}
 
 }
