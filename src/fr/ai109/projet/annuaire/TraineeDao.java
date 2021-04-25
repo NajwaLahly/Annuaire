@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 
-
-
 public class TraineeDao {
 	
 	public static ArrayList<Trainee> sortedTree = new ArrayList<Trainee>();

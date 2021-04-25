@@ -90,7 +90,7 @@ public class ViewUI extends Application{
 			BufferedReader reader = new BufferedReader(new FileReader(originPath));
 			BinaryTreeToFile binaryTreeToFile = new BinaryTreeToFile();
 
-			//binaryTreeToFile.originFileToDestinationFile(reader, raf);
+			binaryTreeToFile.originFileToDestinationFile(reader, raf);
 			traineeDao.getAll(raf, trainee, binaryTreeToFile);
 			traineeDao.sortTreeInOrder(raf, trainee,binaryTreeToFile);
 			for(Trainee t:TraineeDao.sortedTree) {
