@@ -49,9 +49,8 @@ public class BinaryTreeToFile {
 		BinaryTreeToFile.endPosTrainee = endPosTrainee;
 	}
 
-	public void insertTrainee(Trainee trainee, RandomAccessFile raf, BufferedReader reader) {
-		long startPosTraineeInFile = 0;
-		long endPosTraineeInFile = 0;
+	public void insertTrainee(Trainee trainee, RandomAccessFile raf) {
+		
 		try {
 			String trainAddSep = trainee.toString() +"*";
 			byte[] byteCurrentTrainee = trainAddSep.getBytes();
@@ -72,7 +71,7 @@ public class BinaryTreeToFile {
 
 		try {
 			Trainee trainee = getTraineeFromSourceFile(reader);
-			insertTrainee(trainee, raf, reader);		
+			insertTrainee(trainee, raf);		
 			setRoot(raf);
 			raf.seek(raf.getFilePointer() + nbreByteToRead*2);
 			setEndPosTrainee(raf.getFilePointer());
@@ -80,7 +79,7 @@ public class BinaryTreeToFile {
 				Trainee traineeCurrent = getTraineeFromSourceFile(reader);
 				setStartPosTrainee(getEndPosTrainee());
 				raf.seek(getStartPosTrainee());
-				insertTrainee(traineeCurrent, raf, reader);	
+				insertTrainee(traineeCurrent, raf);	
 				setEndPosTrainee(raf.getFilePointer());
 				insertTraineeAsChild(getRoot(), traineeCurrent, raf);
 			}
@@ -178,12 +177,6 @@ public class BinaryTreeToFile {
 		}	
 	}
 
-	public Trainee getRoot() {
-		return root;
-	}
-	public long getIdxEndRoot() {
-		return idxEndRoot;
-	}
 
 	public String[] readTraineeInDestFile(RandomAccessFile raf, long seekPos) {
 		String[] resultat = new String[2];
@@ -210,13 +203,109 @@ public class BinaryTreeToFile {
 		return resultat;
 		//insert trainee Byte in correct pos (algo insert in binary Tree)--> arg (data)
 	}
+	
+	
+//	public ArrayList<Trainee> sortTreeInOrder(RandomAccessFile raf, Trainee trainee){
+//	long rootTree;
+//	String[] resultReadInDestFile = new String[2];
+//	ArrayList<Trainee> sortedTree = new ArrayList<Trainee>();
+//	try {
+//		long startReadPos = 0;
+//		
+//		Stack<Long> stack = new Stack<Long>();
+//		stack.push(startReadPos);
+//		resultReadInDestFile = readTraineeInDestFile(raf, startReadPos);
+//		long endReadPos = Long.parseLong(resultReadInDestFile[1]);
+//		long posRootLeft = readCurrentChildPos(raf, endReadPos, 0);
+//		rootTree = posRootLeft;
+//		while(true) {
+//			
+//			if (rootTree != 0) {
+//				stack.push(rootTree);
+//				//root = root.left
+//				resultReadInDestFile = readTraineeInDestFile(raf, rootTree);
+//				endReadPos = Long.parseLong(resultReadInDestFile[1]);
+//				posRootLeft = readCurrentChildPos(raf, endReadPos, 0);
+//				rootTree = posRootLeft;
+//			}
+//			else {
+//				if(stack.isEmpty()) {
+//					break;
+//				}
+//				rootTree = stack.pop();
+//				resultReadInDestFile = readTraineeInDestFile(raf, rootTree);
+//				sortedTree.add(trainee.stringToObject(resultReadInDestFile[0]));
+//				endReadPos = Long.parseLong(resultReadInDestFile[1]);
+//				//root = root.right
+//				long posRootRight = readCurrentChildPos(raf, endReadPos, nbreByteToRead);
+//				rootTree = posRootRight;
+//			}
+//		}
+//	} catch (Exception e) {
+//		// TODO Auto-generated catch block
+//		e.printStackTrace();
+//	}
+//	return sortedTree;
+//}
 
+//	public ArrayList<Trainee> sortTreeInOrder(RandomAccessFile raf, Trainee trainee){
+//		String rootTree;
+//		String[] resultReadInDestFile = new String[2];
+//		ArrayList<Trainee> sortedTree = new ArrayList<Trainee>();
+//		try {
+//			resultReadInDestFile = readTraineeInDestFile(raf, 0);
+//			long endReadPos = raf.getFilePointer();
+//			rootTree = resultReadInDestFile[0];
+//			Stack<String> stack = new Stack<String>();
+//			while(true) {
+//				if (!rootTree.equals("")) {
+//					stack.push(rootTree);
+//					//root = root.left
+//					long posRootLeft = readCurrentChildPos(raf, endReadPos, 0);
+//					if (posRootLeft == 0){
+//						rootTree = "";
+//						continue;
+//					}
+//					resultReadInDestFile = readTraineeInDestFile(raf, posRootLeft);
+//					rootTree = resultReadInDestFile[0];
+//					endReadPos = Long.parseLong(resultReadInDestFile[1]);
+//				}
+//				else {
+//					if(stack.isEmpty()) {
+//						break;
+//					}
+//					rootTree = stack.pop();
+//					sortedTree.add(trainee.stringToObject(rootTree));
+//					//root = root.right
+//					long posRootRight = readCurrentChildPos(raf, endReadPos, nbreByteToRead);
+//					if (posRootRight == 0){
+//						rootTree = "";
+//						continue;
+//					}
+//					resultReadInDestFile = readTraineeInDestFile(raf, posRootRight);
+//					rootTree = resultReadInDestFile[0];
+//					endReadPos = Long.parseLong(resultReadInDestFile[1]);
+//				}
+//			}
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return sortedTree;
+//	}
 	public static long getStartPosTrainee() {
 		return startPosTrainee;
 	}
 
 	public static void setStartPosTrainee(long startPosTrainee) {
 		BinaryTreeToFile.startPosTrainee = startPosTrainee;
+	}
+
+	public Trainee getRoot() {
+		return root;
+	}
+	public long getIdxEndRoot() {
+		return idxEndRoot;
 	}
 
 }
