@@ -21,15 +21,18 @@ public class Main {
 			Trainee trainee = new Trainee();
 			TraineeDao traineeDao = new TraineeDao();
 			binaryTreeToFile.originFileToDestinationFile(reader, raf);
-			Trainee trainee2 = new Trainee("CCC","jhjdh", "kj", "jh", 2000);
-			long pos = raf.length();
+			Trainee trainee2 = new Trainee("aaa","jhjdh", "kj", "jh", 2000);
+			binaryTreeToFile.setStartPosTrainee(binaryTreeToFile.getEndPosTrainee());
+			raf.seek(binaryTreeToFile.getStartPosTrainee());
+			
 			binaryTreeToFile.insertTrainee(trainee2, raf);
-			raf.seek(pos);
-			binaryTreeToFile.insertTraineeAsChild(trainee, trainee2, raf);
+			binaryTreeToFile.setEndPosTrainee(raf.getFilePointer());
+			//System.out.println("root " + binaryTreeToFile.getRoot());
+			binaryTreeToFile.insertTraineeAsChild(binaryTreeToFile.getRoot(), trainee2, raf);
 //			traineeDao.getAll(raf, trainee, binaryTreeToFile);
 //			for(Trainee traineeCurrent : traineeDao.traineeList) {
 //					System.out.println(traineeCurrent);
-//				}
+//				}f
 			traineeDao.sortTreeInOrder(raf, trainee, binaryTreeToFile);
 			for(Trainee traineeCurrent : traineeDao.sortedTree) {
 				System.out.println(traineeCurrent);
