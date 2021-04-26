@@ -1,7 +1,6 @@
 package fr.ai109.projet.annuaire;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.RandomAccessFile;
 import javafx.application.Application;
@@ -81,12 +80,13 @@ public class ViewUI extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
-		File binaryfile = new File(destinationPath);
-		Trainee trainee = new Trainee();
-		RandomAccessFile raf = new RandomAccessFile(binaryfile, "rw");
-		BufferedReader reader = new BufferedReader(new FileReader(originPath));
+		//File binaryfile = new File(destinationPath);
 		BinaryTreeToFile binaryTreeToFile = new BinaryTreeToFile();
-		TraineeDao traineeDao = new TraineeDao(raf,trainee,binaryTreeToFile);
+		BufferedReader reader = new BufferedReader(new FileReader(originPath));
+		RandomAccessFile raf = new RandomAccessFile(destinationPath, "rw");
+		if (raf.length()==0) {
+			binaryTreeToFile.originFileToDestinationFile(reader, raf);
+		}
 
 
 		primaryStage.setTitle("ANNUAIRE EQL");
@@ -96,19 +96,20 @@ public class ViewUI extends Application{
 		primaryStage.setScene(scene);
 		primaryStage.sizeToScene();
 
-		//3 boxes piled up: user interface, Table view, one simple pane with "export pdf" btn
+		//3 pannels piled up in a borderPane: user interface(HBox)/ Table view/ pane with "export pdf" btn
 
-		//1st VBox topView=user interface= hBox with GridPane on the left and BorderPane with icon on the right
+		//1) HBox= topView=user interface= hBox with GridPane on the left and BorderPane with icon on the right
 
 		topView.getChildren().addAll(setTopViewLeft(),setTopViewRight());
 
-		//2nd Vbox tableView
+		//2) tableView
 
-		obs = FXCollections.observableArrayList(traineeDao.getAllSorted());
+		TraineeDao traineeDao = new TraineeDao();
+		obs = FXCollections.observableList(traineeDao.getAllSorted());
 		TableView<Trainee> tableView = getTable(obs);
 
 
-		//3rd VBox pane with export pdf btn
+		//3) pane with export pdf btn
 		setBottomView();
 
 		//adding three pannels to the primaryRoot borderPane
@@ -118,6 +119,7 @@ public class ViewUI extends Application{
 
 		primaryStage.show();
 	}
+
 
 
 	private Stage setPasswordStage() {
@@ -184,7 +186,6 @@ public class ViewUI extends Application{
 		titre.setFont(new Font("Cambria",26));
 
 
-
 		Label lastName = new Label("NOM");
 		lastName.setFont(new Font("Cambria",16));
 		Label firstName = new Label("PRENOM");
@@ -209,7 +210,7 @@ public class ViewUI extends Application{
 		topViewLeft.addRow(3,update, zipCode,zipCodeT);
 		topViewLeft.addRow(4, search, batch,batchT);
 		topViewLeft.addRow(5, help, year,yearT);
-		
+
 		topViewLeft.setHgap(100);;//comment ça marche?
 		topViewLeft.setVgap(45);
 
@@ -217,8 +218,14 @@ public class ViewUI extends Application{
 			@Override
 			public void handle(ActionEvent event) {
 				Trainee newTrainee = new Trainee(lastNameT.getText(),firstNameT.getText(),zipCodeT.getText(),batchT.getText(),Integer.parseInt(yearT.getText()));
-				obs.add(newTrainee);
 				TraineeDao.addTraineeInRaf(newTrainee);
+				TraineeDao traineeDao = new TraineeDao();
+				//traineeDao.getAllSorted();
+				obs = FXCollections.observableList(traineeDao.getAllSorted());
+								for(Trainee t:TraineeDao.sortedList) {
+									System.out.println(t);	
+								}
+				refresh(obs);
 			}
 		});
 
