@@ -2,10 +2,8 @@ package fr.ai109.projet.annuaire;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.RandomAccessFile;
-import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -79,30 +77,6 @@ public class ViewUI extends Application{
 		return tableView;
 	}
 
-
-	//	public static ArrayList<Trainee> fileData () { //changer le nom!!
-	//		// TODO Auto-generated method stub
-	//		File binaryfile = new File(destinationPath);
-	//		Trainee trainee = new Trainee();
-	//		
-	//		try {
-	//			//revoir new file pour originePath
-	//			RandomAccessFile raf = new RandomAccessFile(binaryfile, "rw");
-	//			BufferedReader reader = new BufferedReader(new FileReader(originPath));
-	//			BinaryTreeToFile binaryTreeToFile = new BinaryTreeToFile();
-	//			TraineeDao traineeDao = new TraineeDao(raf,trainee,binaryTreeToFile);
-	//			binaryTreeToFile.originFileToDestinationFile(reader, raf);
-	//			traineeDao.getAll();
-	//			//traineeDao.sortTreeInOrder(raf, trainee,binaryTreeToFile);
-	//			for(Trainee t:TraineeDao.sortedTree) {
-	//				System.out.println(t);
-	//			}
-	//		} catch (Exception e) {
-	//			// TODO Auto-generated catch block
-	//			e.printStackTrace();
-	//		}
-	//		return traineeDao.getAll();
-	//	}	
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
