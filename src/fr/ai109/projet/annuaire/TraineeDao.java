@@ -9,25 +9,38 @@ import java.util.Stack;
 public class TraineeDao {
 	
 	public static ArrayList<Trainee> sortedTree = new ArrayList<Trainee>();
-	public ArrayList<Trainee> traineeList = new ArrayList<Trainee>();
+	//public ArrayList<Trainee> traineeList = new ArrayList<Trainee>();
+	
+	
 
-	public ArrayList<Trainee> getAll(RandomAccessFile raf, Trainee trainee, BinaryTreeToFile binaryTreeToFile){
+	public TraineeDao (RandomAccessFile raf, Trainee trainee, BinaryTreeToFile binaryTreeToFile){
 
-		try {
-			long seekPos = 0;
-			String[] resultatTab = new String[2];
-			while (seekPos != raf.length()) {
-				resultatTab = binaryTreeToFile.readTraineeInDestFile(raf, seekPos);
-				traineeList.add(trainee.stringToObject(resultatTab[0]));
-				seekPos = Long.parseLong(resultatTab[1]) + BinaryTreeToFile.nbreByteToRead*2;
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return traineeList;
-
+		sortTreeInOrder(raf, trainee, binaryTreeToFile);
+		
+		
+		
+//		try {
+//			long seekPos = 0;
+//			String[] resultatTab = new String[2];
+//			while (seekPos != raf.length()) {
+//				resultatTab = binaryTreeToFile.readTraineeInDestFile(raf, seekPos);
+//				traineeList.add(trainee.stringToObject(resultatTab[0]));
+//				seekPos = Long.parseLong(resultatTab[1]) + BinaryTreeToFile.nbreByteToRead*2;
+//				
+//			}
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+	
 	}
+	
+	public ArrayList<Trainee> getAllSorted(){
+		return sortedTree;
+	}
+	
+	
+	
 	public void sortTreeInOrder(RandomAccessFile raf, Trainee trainee,BinaryTreeToFile binaryTreeToFile){
 	    long rootTree;
 	    String[] resultReadInDestFile = new String[2];
