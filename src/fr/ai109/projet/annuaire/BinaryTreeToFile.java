@@ -6,7 +6,6 @@ import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Stack;
 
-
 public class BinaryTreeToFile {
 
 	public static Trainee root = new Trainee();
@@ -14,6 +13,7 @@ public class BinaryTreeToFile {
 	public static int nbreByteToRead = 8;
 	public static long startPosTrainee = 0;
 	public static long endPosTrainee = 0;
+	
 	//get a trainee node
 	//lire ligne fichier
 	//create trainee object
@@ -67,85 +67,6 @@ public class BinaryTreeToFile {
 		}
 	}
 
-	public void searchByLastName(String lastName, RandomAccessFile raf) {
-
-		Trainee parent = new Trainee();
-		Trainee current = new Trainee();
-		String lastFound = "";
-		setRoot(raf);
-		current = root;
-		long idxEndCurrent = idxEndRoot;
-		String[] resultatReadInFile =new String[2];
-		long posCurrentChildLong = idxEndRoot;
-
-		try {
-			while(posCurrentChildLong != 0) {
-				parent = current;
-				if(current.getLastName().compareToIgnoreCase(lastName) < 0) {
-					posCurrentChildLong = readCurrentChildPos(raf, idxEndCurrent, nbreByteToRead);					
-
-				}
-				else if(current.getLastName().compareToIgnoreCase(lastName) > 0) {
-					posCurrentChildLong = readCurrentChildPos(raf, idxEndCurrent, 0);
-
-				}
-				else{
-					System.out.println(current);
-					posCurrentChildLong = readCurrentChildPos(raf, idxEndCurrent, 0);
-					lastFound = "break";
-					long posCurrentLeft = readCurrentChildPos(raf, idxEndCurrent, 0);
-					long posCurrentRight = readCurrentChildPos(raf, idxEndCurrent, nbreByteToRead);
-					if(posCurrentLeft == 0 && posCurrentRight == 0) {
-						break;					
-					}
-					else if(posCurrentLeft != 0 && posCurrentRight == 0) {
-						posCurrentChildLong = posCurrentLeft;
-					}
-					else if(posCurrentLeft == 0 && posCurrentRight != 0) {
-						posCurrentChildLong = posCurrentRight;
-					}
-					else {
-						resultatReadInFile = readTraineeInDestFile(raf, posCurrentLeft);
-						String CurrentChildString = resultatReadInFile[0];
-						if(current.stringToObject(CurrentChildString).getLastName().compareToIgnoreCase(current.getLastName()) < 0) {
-							idxEndCurrent = Long.parseLong(resultatReadInFile[1]);
-							//current = current.R/L
-							current = current.stringToObject(CurrentChildString);
-							continue;
-						}
-
-					}
-				}
-
-				//read right/left child object
-				if(posCurrentChildLong != 0) {
-					resultatReadInFile = readTraineeInDestFile(raf, posCurrentChildLong);
-					String CurrentChildString = resultatReadInFile[0];
-					idxEndCurrent = Long.parseLong(resultatReadInFile[1]);
-					//current = current.R/L
-					current = current.stringToObject(CurrentChildString);
-				}
-			}
-			//System.out.println("introuvable");
-			//				if(parent.toString().compareToIgnoreCase(trainee.toString()) < 0) {
-			//					raf.seek(idxEndCurrent + nbreByteToRead);
-			//					raf.writeLong(getStartPosTrainee());				
-			//				}
-			//				else {
-			//					raf.seek(idxEndCurrent);
-			//					raf.writeLong(getStartPosTrainee());
-			//					raf.seek(getEndPosTrainee());
-			//
-			//				}
-
-		}catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-
-
 	public ArrayList<Trainee> search(RandomAccessFile raf, Trainee trainee, int criterea, String traineeToFind){
 		long rootTree;
 		String[] resultReadInDestFile = new String[2];
@@ -184,7 +105,9 @@ public class BinaryTreeToFile {
 					rootTree = posRootRight;
 				}
 			}
+
 		} catch (Exception e) {
+
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -193,8 +116,6 @@ public class BinaryTreeToFile {
 
 
 public void originFileToDestinationFile(BufferedReader reader, RandomAccessFile raf) {
-
-
 	try {
 		Trainee trainee = getTraineeFromSourceFile(reader);
 		insertTrainee(trainee, raf);		
@@ -213,7 +134,6 @@ public void originFileToDestinationFile(BufferedReader reader, RandomAccessFile 
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
-
 }
 
 public void insertTraineeAsChild(Trainee root, Trainee trainee, RandomAccessFile raf) {
@@ -221,7 +141,7 @@ public void insertTraineeAsChild(Trainee root, Trainee trainee, RandomAccessFile
 	Trainee current = new Trainee();
 	current = root;
 	long idxEndCurrent = idxEndRoot;
-	String[] resultatReadInFile =new String[2];
+	String[] resultatReadInFile = new String[2];
 	long posCurrentChildLong = idxEndRoot;
 
 	try {
@@ -280,10 +200,9 @@ public long readCurrentChildPos(RandomAccessFile raf, long idxCurrent, int sideL
 		e.printStackTrace();
 	}
 	//read right child pos
-
 	return posCurrentChildLong;
 }
-//get root
+
 
 /**
  * @param raf

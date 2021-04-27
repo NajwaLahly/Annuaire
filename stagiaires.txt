@@ -11,7 +11,7 @@ ATOD 7
 2009
 *
 CHICHEPORTICHE
-St√©phane
+StÈphane
 95
 ATOD 8
 2010
@@ -35,7 +35,7 @@ ATOD 7
 2009
 *
 MARTEAU
-R√©my
+RÈmy
 95
 AI 81
 2011
@@ -226,8 +226,8 @@ Lahcen
 ATOD 26
 2015
 *
-TOUZ√â
-Th√©o
+TOUZ…
+ThÈo
 95
 ATOD 11
 2011
@@ -239,13 +239,13 @@ AI 82
 2011
 *
 AGBODJI
-D√©d√©
+DÈdÈ
 95
 ATOD 17
 2013
 *
 MARTEAU
-R√©my
+RÈmy
 95
 ATOD 15 CP
 2012
@@ -299,7 +299,7 @@ AI 75
 2009
 *
 AUSSEL
-Fr√©d√©rique
+FrÈdÈrique
 95
 ATOD 1
 2012
@@ -323,13 +323,13 @@ AI 91
 2014
 *
 CHAUVET
-R√©mi
+RÈmi
 94
 ATOD 16 CP
 2012
 *
 VARNILD
-S√©bastien
+SÈbastien
 94
 AI 74
 2009
@@ -371,13 +371,13 @@ AI 69
 2006
 *
 RIO
-Beno√Æt
+BenoÓt
 94
 ATOD 6
 2009
 *
 PELLET
-Aur√©lien
+AurÈlien
 94
 AI 73
 2008
@@ -443,7 +443,7 @@ ATOD 10
 2010
 *
 FRANCISQUE
-J√©r√¥me
+JÈrÙme
 94
 ATOD 11
 2011
@@ -455,7 +455,7 @@ AI 83
 2012
 *
 SAUVETON
-Beno√Æt
+BenoÓt
 94
 ATOD 14
 2012
@@ -491,7 +491,7 @@ AROBAS 3
 2008
 *
 SARI
-M√©lina
+MÈlina
 94
 AI 83
 2012
@@ -551,7 +551,7 @@ AI 83
 2012
 *
 CHAUVET
-R√©mi
+RÈmi
 94
 AI 83
 2012
@@ -581,7 +581,7 @@ AROBAS 1
 2007
 *
 KARABAN
-J√©r√¥me
+JÈrÙme
 94
 AI 81
 2011
@@ -623,7 +623,7 @@ ATOD 15
 2012
 *
 PASQUOTTI
-C√©dric
+CÈdric
 94
 ATOD 13
 2011
@@ -647,7 +647,7 @@ ATOD 26 CP
 2015
 *
 BELKASMI
-Micha√´l
+MichaÎl
 94
 AI 64
 2004
@@ -683,7 +683,7 @@ ATOD 22
 2014
 *
 CREMAZY
-J√©r√¥me
+JÈrÙme
 94
 AI 69
 2006
@@ -935,7 +935,7 @@ BOBI 5
 2008
 *
 RANDRIAMORAMANANA
-Dina Est√®le 
+Dina EstËle 
 94
 AROBAS 3
 2008
@@ -947,7 +947,7 @@ ATOD 25
 2015
 *
 BENAYOUN
-Gis√®le
+GisËle
 94
 ATOD 14
 2012
@@ -965,7 +965,7 @@ AI 97
 2016
 *
 PEPIN
-J√©r√¥me
+JÈrÙme
 94
 AROBAS 3
 2008
@@ -1067,7 +1067,7 @@ AI 90
 2013
 *
 LEGRAND
-St√©phane
+StÈphane
 94
 ATOD 7
 2009
@@ -1121,7 +1121,7 @@ AI 84
 2012
 *
 PELLET
-Aur√©lien
+AurÈlien
 94
 ATOD 6
 2009
@@ -1337,7 +1337,7 @@ ATOD 15 CP
 2012
 *
 LALIETTE
-Pam√©la
+PamÈla
 93
 AI 89
 2013
@@ -1541,7 +1541,7 @@ ATOD 25
 2015
 *
 CHIKHI
-Fay√ßal
+FayÁal
 93
 ATOD 14
 2012
@@ -1613,7 +1613,7 @@ AI 97
 2016
 *
 MAFFEI
-Andr√©
+AndrÈ
 93
 ATOD 5
 2009
@@ -1625,7 +1625,7 @@ BOBI 4
 2008
 *
 DURRANT
-R√©gis
+RÈgis
 93
 AROBAS 3
 2008
@@ -1655,7 +1655,7 @@ AROBAS 1
 2007
 *
 KHALDI
-Na√Øma
+NaÔma
 93
 AI 81
 2011
@@ -1679,7 +1679,7 @@ ATOD 8
 2010
 *
 MERCIER
-St√©phane
+StÈphane
 93
 ATOD 14
 2012
@@ -1690,7 +1690,7 @@ Fadoua
 AI 91
 2014
 *
-DAPHN√â
+DAPHN…
 Dario
 93
 AI 56
@@ -1859,7 +1859,7 @@ AI 86
 2012
 *
 BATANA
-C√©lia
+CÈlia
 93
 AI 97
 2016
@@ -1883,7 +1883,7 @@ ATOD 26
 2015
 *
 VIEIRA
-Micha√´l
+MichaÎl
 92
 ATOD 15
 2012
@@ -1901,7 +1901,7 @@ AI 69
 2006
 *
 ESCHENBRENNER
-C√©line
+CÈline
 92
 AI 70
 2007
@@ -1919,7 +1919,7 @@ ATOD 1
 2012
 *
 BONNEAU
-Fr√©d√©ric
+FrÈdÈric
 92
 AI 74
 2009
@@ -2009,7 +2009,7 @@ AI 72
 2008
 *
 TELLIEZ
-Fran√ßois
+FranÁois
 92
 ATOD 11
 2011
@@ -2069,13 +2069,13 @@ AI 85
 2012
 *
 MIGEON
-J√©r√¥me
+JÈrÙme
 92
 AI 70
 2007
 *
 BARBIN
-Eug√®ne Armand
+EugËne Armand
 92
 AI 82
 2011
@@ -2153,7 +2153,7 @@ ATOD 12
 2011
 *
 LECLERC
-St√©phane
+StÈphane
 92
 AROBAS 2
 2007
@@ -2195,7 +2195,7 @@ AI 92
 2014
 *
 KEDI NGAM
-Dieudonn√©
+DieudonnÈ
 92
 AI 67
 2005
@@ -2255,7 +2255,7 @@ BOBI 1
 2004
 *
 LONGLADE
-C√©lia
+CÈlia
 92
 AI 81
 2011
@@ -2291,7 +2291,7 @@ ATOD 24 CP
 2015
 *
 HOFF
-Fr√©d√©ric
+FrÈdÈric
 92
 ATOD 20
 2014
@@ -2417,7 +2417,7 @@ ATOD 19
 2013
 *
 TAUVEL
-S√©bastien
+SÈbastien
 92
 ATOD 12
 2011
@@ -2465,7 +2465,7 @@ AI 96
 2015
 *
 ARNOUX
-C√©line
+CÈline
 92
 AI 67
 2005
@@ -2477,7 +2477,7 @@ ATOD 20
 2014
 *
 TAUVEL
-S√©bastien
+SÈbastien
 92
 AI 78
 2010
@@ -2512,7 +2512,7 @@ Carmelo
 AI 87
 2013
 *
-WOIVR√â
+WOIVR…
 Wilfried
 92
 ATOD 10
@@ -2537,7 +2537,7 @@ AI 93
 2014
 *
 LISEMBARD
-Lo√Øc
+LoÔc
 92
 AI 69
 2006
@@ -2687,7 +2687,7 @@ AI 71
 2007
 *
 CAMARA
-Aboubacar Macir√©
+Aboubacar MacirÈ
 92
 ATOD 19
 2013
@@ -2711,7 +2711,7 @@ AI 87
 2013
 *
 LE BARON
-J√©r√¥me
+JÈrÙme
 92
 ATOD 26 CP
 2015
@@ -2722,7 +2722,7 @@ Jeremy
 AI 88
 2013
 *
-L'H√îTE
+L'H‘TE
 Caroline
 92
 ATOD 7
@@ -2753,7 +2753,7 @@ ATOD 22
 2014
 *
 RAMAROZAKA
-Na√Øs
+NaÔs
 92
 AI 93
 2014
@@ -2771,7 +2771,7 @@ AI 73
 2008
 *
 LABALETTE
-Fran√ßois
+FranÁois
 92
 ATOD 13
 2011
@@ -2813,7 +2813,7 @@ ATOD 9
 2010
 *
 TESSON
-R√©gis
+RÈgis
 92
 AI 78
 2010
@@ -2837,7 +2837,7 @@ ATOD 10
 2010
 *
 SADELER
-Jo√´l
+JoÎl
 92
 AI 79
 2011
@@ -2849,13 +2849,13 @@ AROBAS 1
 2007
 *
 DUCET
-Timoth√©e
+TimothÈe
 92
 AI 83
 2012
 *
 BONFILS
-La√´titia
+LaÎtitia
 92
 ATOD 9
 2010
@@ -2903,7 +2903,7 @@ ATOD 18
 2013
 *
 SAHNOUN
-R√©da
+RÈda
 92
 ATOD 13
 2011
@@ -2981,7 +2981,7 @@ ATOD 19
 2013
 *
 AUGEREAU
-K√©vin
+KÈvin
 92
 ATOD 12
 2011
@@ -3005,13 +3005,13 @@ AI 79
 2011
 *
 RICAUD
-Beno√Æt
+BenoÓt
 92
 AI 83
 2012
 *
 MELLIAND
-K√©vin
+KÈvin
 92
 ATOD 24 CP
 2015
@@ -3101,13 +3101,13 @@ AROBAS 3
 2008
 *
 KUOK
-Fran√ßois
+FranÁois
 92
 AI 77
 2010
 *
 MICHEZ
-Jean-Fran√ßois
+Jean-FranÁois
 92
 ATOD 8
 2010
@@ -3125,7 +3125,7 @@ ATOD 15
 2012
 *
 BARBIN
-Eug√®ne Armand
+EugËne Armand
 92
 ATOD 15 CP
 2012
@@ -3185,7 +3185,7 @@ AI 62
 2004
 *
 QUINT
-St√©phane
+StÈphane
 92
 ATOD 10
 2010
@@ -3221,7 +3221,7 @@ AI 80
 2011
 *
 PALLARDY
-K√©vin
+KÈvin
 91
 AI 87
 2013
@@ -3263,7 +3263,7 @@ AI 91
 2014
 *
 AMROUCHE
-M√©ziane
+MÈziane
 91
 ATOD 6
 2009
@@ -3323,7 +3323,7 @@ ATOD 21
 2014
 *
 AMROUCHE
-M√©ziane
+MÈziane
 91
 AI 69
 2006
@@ -3419,7 +3419,7 @@ ATOD 2
 2008
 *
 MARCHAND
-Nad√®ge
+NadËge
 91
 AI 59
 2003
@@ -3473,13 +3473,13 @@ ATOD 26
 2015
 *
 PERIAN
-Oph√©lie
+OphÈlie
 91
 AI 75
 2009
 *
 DELEE
-St√©phane
+StÈphane
 91
 AI 76
 2009
@@ -3539,7 +3539,7 @@ ATOD 8
 2010
 *
 MIRAILLES
-B√©atrice
+BÈatrice
 91
 ATOD 7
 2009
@@ -3563,7 +3563,7 @@ AI 76
 2009
 *
 ASSOGBA
-L√©on
+LÈon
 91
 AI 59
 2003
@@ -3713,7 +3713,7 @@ ATOD 20
 2014
 *
 BUTEL
-St√©phane
+StÈphane
 78
 AI 78
 2010
@@ -3755,7 +3755,7 @@ ATOD 5
 2009
 *
 CANY
-J√©r√¥me
+JÈrÙme
 78
 AI 77
 2010
@@ -3851,7 +3851,7 @@ ATOD 13
 2011
 *
 LEGAY
-Cl√©ment
+ClÈment
 78
 AI 61
 2003
@@ -3887,7 +3887,7 @@ AI 85
 2012
 *
 BALDY
-J√©r√©mie
+JÈrÈmie
 78
 ATOD 7
 2009
@@ -3911,7 +3911,7 @@ ATOD 17 CP
 2013
 *
 OUAKLIL
-Hac√®ne
+HacËne
 78
 ATOD 8
 2010
@@ -3941,7 +3941,7 @@ ATOD 18
 2013
 *
 ALLANIC
-Herv√©
+HervÈ
 78
 ATOD 12
 2011
@@ -3977,7 +3977,7 @@ BOBI 1
 2004
 *
 LEVY
-St√©phane
+StÈphane
 78
 AI 83
 2012
@@ -4060,7 +4060,7 @@ Laetitia
 ATOD 21
 2014
 *
-KEBA√ØLI
+KEBAÔLI
 Khaled-Majid
 78
 AI 61
@@ -4103,7 +4103,7 @@ ATOD 4
 2008
 *
 MANCHON
-Ga√´tan
+GaÎtan
 78
 ATOD 10
 2010
@@ -4139,7 +4139,7 @@ BOBI 5
 2008
 *
 SIRI
-Beno√Æt
+BenoÓt
 78
 AI 77
 2010
@@ -4187,7 +4187,7 @@ AI 82
 2011
 *
 OUAKLIL
-Hac√®ne
+HacËne
 78
 AI 73
 2008
@@ -4241,7 +4241,7 @@ AI 85
 2012
 *
 CANONNE
-Fr√©d√©ric
+FrÈdÈric
 78
 AI 75
 2009
@@ -4271,7 +4271,7 @@ ATOD 16 CP
 2012
 *
 PERETOU
-B√©atrice
+BÈatrice
 78
 BOBI 4
 2008
@@ -4289,7 +4289,7 @@ AI 85
 2012
 *
 TRAJCEVSKI
-St√©phane
+StÈphane
 78
 AI 75
 2009
@@ -4403,7 +4403,7 @@ AI 97
 2016
 *
 BARNOUIN
-R√©gis
+RÈgis
 77
 AI 63
 2004
@@ -4445,7 +4445,7 @@ AI 95
 2015
 *
 PERICARD
-S√©bastien
+SÈbastien
 77
 AI 59
 2003
@@ -4493,7 +4493,7 @@ ATOD 19 CP
 2013
 *
 LECOCQ
-C√©dric
+CÈdric
 77
 ATOD 16
 2012
@@ -4541,7 +4541,7 @@ AI 79
 2011
 *
 JOLLY
-Gr√©goire
+GrÈgoire
 77
 AROBAS 1
 2007
@@ -4607,7 +4607,7 @@ AI 72
 2008
 *
 ZANIFE
-Daw√©
+DawÈ
 77
 BOBI 4
 2008
@@ -4709,7 +4709,7 @@ AI 87
 2013
 *
 AUGEREAU
-K√©vin
+KÈvin
 76
 AI 78
 2010
@@ -4733,7 +4733,7 @@ AI 96
 2015
 *
 HIRRIEN
-Gw√©na√´lle
+GwÈnaÎlle
 75
 ATOD 19 CP
 2013
@@ -4751,13 +4751,13 @@ AI 94
 2015
 *
 BENHAIM
-L√©onard
+LÈonard
 75
 ATOD 16
 2012
 *
 MARIMBORDES
-Herv√©
+HervÈ
 75
 ATOD 23
 2015
@@ -4793,7 +4793,7 @@ AI 88
 2013
 *
 BARRY
-V√©ronique
+VÈronique
 75
 BOBI 4
 2008
@@ -4805,7 +4805,7 @@ ATOD 17 CP
 2013
 *
 DAVID
-Aur√©lie
+AurÈlie
 75
 ATOD 2
 2008
@@ -4829,7 +4829,7 @@ ATOD 8
 2010
 *
 COUZON
-Fran√ßois-R√©gis
+FranÁois-RÈgis
 75
 ATOD 14
 2012
@@ -4847,7 +4847,7 @@ AI 97
 2016
 *
 HUBENS
-St√©phane
+StÈphane
 75
 AI 67
 2005
@@ -4901,7 +4901,7 @@ ATOD 16 CP
 2012
 *
 RODES
-St√©phanie
+StÈphanie
 75
 AI 74
 2009
@@ -4943,7 +4943,7 @@ ATOD 24 CP
 2015
 *
 RANARIVELO
-S√©bastien
+SÈbastien
 75
 ATOD 21 CP
 2014
@@ -5068,7 +5068,7 @@ Gael
 AI 73
 2008
 *
-LA√è
+LAœ
 Rodolphe
 75
 ATOD 13
@@ -5087,7 +5087,7 @@ BOBI 1
 2004
 *
 TAVANI
-Beno√Æt
+BenoÓt
 75
 AI 64
 2004
@@ -5201,7 +5201,7 @@ BOBI 4
 2008
 *
 BESSON
-B√©atrice
+BÈatrice
 75
 BOBI 5
 2008
@@ -5267,13 +5267,13 @@ AI 71
 2007
 *
 ROUET
-R√©gis
+RÈgis
 75
 ATOD 3
 2008
 *
 ADRASTE
-M√©d√©ric
+MÈdÈric
 75
 AI 73
 2008
@@ -5345,7 +5345,7 @@ ATOD 9
 2010
 *
 LAURENS
-Fr√©d√©ric
+FrÈdÈric
 75
 ATOD 15 CP
 2012
@@ -5357,7 +5357,7 @@ AI 94
 2015
 *
 DERIO
-Ma√´l
+MaÎl
 75
 ATOD 6
 2009
@@ -5375,7 +5375,7 @@ AI 80
 2011
 *
 MERCADER
-L√©onard
+LÈonard
 75
 AI 73
 2008
@@ -5411,7 +5411,7 @@ AI 79
 2011
 *
 FIOT
-Cl√©ment
+ClÈment
 75
 ATOD 14
 2012
@@ -5477,7 +5477,7 @@ AROBAS 2
 2007
 *
 MEILLON
-H√©l√®ne
+HÈlËne
 75
 AI 73
 2008
@@ -5537,7 +5537,7 @@ AI 96
 2015
 *
 GAUTRIN
-S√©bastien
+SÈbastien
 75
 ATOD 9
 2010
@@ -5759,13 +5759,13 @@ AI 78
 2010
 *
 RAKOTOMALALA
-Mika√´l
+MikaÎl
 75
 AI 69
 2006
 *
 MELKI
-J√©r√©mie
+JÈrÈmie
 75
 ATOD 6
 2009
@@ -5825,7 +5825,7 @@ AI 74
 2009
 *
 AMOUSSOU
-R√©gis
+RÈgis
 75
 ATOD 10
 2010
@@ -6023,7 +6023,7 @@ ATOD 10
 2010
 *
 SORIN
-Ga√©tan
+GaÈtan
 75
 ATOD 15 CP
 2012
@@ -6053,7 +6053,7 @@ ATOD 12
 2011
 *
 DURAND
-Agn√®s
+AgnËs
 75
 AI 73
 2008
@@ -6167,19 +6167,19 @@ AI 87
 2013
 *
 BENICHOU
-Ari√©
+AriÈ
 75
 ATOD 11
 2011
 *
 COVA
-St√©phane
+StÈphane
 75
 AI 72
 2008
 *
 BENTAHRA
-Sa√Ød
+SaÔd
 75
 AI 65
 2004
@@ -6341,7 +6341,7 @@ ATOD 24
 2015
 *
 SORIN
-Ga√©tan
+GaÈtan
 75
 AI 82
 2011
@@ -6371,7 +6371,7 @@ ATOD 18
 2013
 *
 BOURNOF
-Gr√©gory
+GrÈgory
 75
 AI 73
 2008
@@ -6425,7 +6425,7 @@ ATOD 6
 2009
 *
 FIZAINE DUPONT
-C√©line
+CÈline
 60
 AI 71
 2007
@@ -6455,13 +6455,13 @@ ATOD 10
 2010
 *
 FARHAT
-M√©ri√®me
+MÈriËme
 60
 AI 70
 2007
 *
 HAYAR
-Sa√Ød
+SaÔd
 60
 AI 69
 2006
@@ -6545,25 +6545,25 @@ AI 73
 2008
 *
 GANESSANE
-Dourga C√©line
+Dourga CÈline
 45
 ATOD 24
 2015
 *
 WEBEN
-L√©a
+LÈa
 44
 AI 82
 2011
 *
 WEBEN
-L√©a
+LÈa
 44
 ATOD 15 CP
 2012
 *
 BIGNON
-J√©r√¥me
+JÈrÙme
 44
 ATOD 12
 2011
@@ -6611,13 +6611,13 @@ AI 60
 2003
 *
 LEROUSSEAUD
-C√©dric
+CÈdric
 31
 AI 76
 2009
 *
 MORSLI
-R√©da
+RÈda
 31
 AI 74
 2009
@@ -6629,7 +6629,7 @@ AI 72
 2008
 *
 BABEL
-Fr√©d√©ric
+FrÈdÈric
 31
 AROBAS 3
 2008
@@ -6749,7 +6749,7 @@ ATOD 24 CP
 2015
 *
 PICHON
-S√©bastien
+SÈbastien
 10
 AI 75
 2009
@@ -6791,13 +6791,13 @@ AI 67
 2005
 *
 FLORENTIN
-Fr√©d√©ric
+FrÈdÈric
 91
 AI 68
 2006
 *
 LOUVET
-Th√©r√®se
+ThÈrËse
 94
 AI 58
 2003
@@ -6809,19 +6809,19 @@ AI 60
 2003
 *
 BENTEUR
-J√©r√¥me
+JÈrÙme
 93
 AI 60
 2003
 *
 BLANC
-Marie-B√©n√©dicte
+Marie-BÈnÈdicte
 75
 AI 62
 2004
 *
 SIRE
-S√©bastien
+SÈbastien
 92
 BOBI 2
 2006
@@ -6869,13 +6869,13 @@ AI 68
 2006
 *
 BONNEVILLE
-Lo√Øc
+LoÔc
 94
 AI 58
 2003
 *
 COCHEREL
-St√©phanie
+StÈphanie
 95
 AI 59
 2003
@@ -6965,7 +6965,7 @@ AI 59
 2003
 *
 LINISE
-G√©rald
+GÈrald
 92
 AI 60
 2003
@@ -7019,7 +7019,7 @@ AI 65
 2004
 *
 TRIQUET
-St√©phane
+StÈphane
 92
 AI 67
 2005
@@ -7067,13 +7067,13 @@ BOBI 3
 2007
 *
 BAGLIN
-Fran√ßoise
+FranÁoise
 75
 AI 57
 2002
 *
 BREVET
-S√©bastien
+SÈbastien
 92
 AI 58
 2003
@@ -7097,13 +7097,13 @@ AI 58
 2003
 *
 AUDENARD
-Jean-Fran√ßois
+Jean-FranÁois
 59
 AI 60
 2003
 *
 de L'ESCALOPIER
-Agn√®s
+AgnËs
 45
 AI 61
 2003
@@ -7145,7 +7145,7 @@ AI 57
 2002
 *
 DE MOURA
-Fr√©d√©ric
+FrÈdÈric
 78
 AI 65
 2004
@@ -7247,13 +7247,13 @@ AI 58
 2003
 *
 MOAL
-Gr√©gory
+GrÈgory
 92
 AI 59
 2003
 *
 LE RAYER
-Andr√©
+AndrÈ
 95
 BOBI 1
 2004
@@ -7325,19 +7325,19 @@ AI 62
 2004
 *
 ANTOINE
-Fran√ßois
+FranÁois
 92
 BOBI 2
 2006
 *
 LADET
-V√©ronique
+VÈronique
 SU
 AI 63
 2004
 *
 BARDIN
-Fr√©d√©ric
+FrÈdÈric
 92
 AI 58
 2003
@@ -7433,7 +7433,7 @@ BOBI 1
 2004
 *
 SOURY
-St√©phane
+StÈphane
 75
 AI 61
 2003
@@ -7517,13 +7517,13 @@ BOBI 1
 2004
 *
 PEREIRA
-Jos√©
+JosÈ
 78
 AI 62
 2004
 *
 COSTREJEAN
-C√©dric
+CÈdric
 92
 AI 63
 2004
@@ -7541,7 +7541,7 @@ BOBI 3
 2007
 *
 ALLIOT
-Herv√©
+HervÈ
 94
 AI 58
 2003
@@ -7559,7 +7559,7 @@ AI 66
 2005
 *
 DURAND
-C√©dric
+CÈdric
 95
 AI 67
 2005
@@ -7589,7 +7589,7 @@ BOBI 1
 2004
 *
 MILON
-Mich√®le
+MichËle
 93
 BOBI 2
 2006
@@ -7607,7 +7607,7 @@ AI 63
 2004
 *
 DUBOIS
-S√©bastien
+SÈbastien
 75
 AI 57
 2002
@@ -7625,7 +7625,7 @@ AI 66
 2005
 *
 CHATILLON
-C√©dric
+CÈdric
 77
 AI 67
 2005
@@ -7637,7 +7637,7 @@ AI 68
 2006
 *
 LATOUR
-Fran√ßois
+FranÁois
 91
 AI 58
 2003
@@ -7661,7 +7661,7 @@ AI 61
 2003
 *
 LATOUR
-St√©phane
+StÈphane
 93
 BOBI 2
 2006
@@ -7691,7 +7691,7 @@ AI 56
 2002
 *
 LEPICARD
-Fr√©d√©ric
+FrÈdÈric
 75
 AI 64
 2004
@@ -7709,7 +7709,7 @@ AI 66
 2005
 *
 MULLER
-S√©bastien
+SÈbastien
 78
 AI 68
 2006
@@ -7769,7 +7769,7 @@ AI 68
 2006
 *
 BROUILLARD
-Fr√©d√©ric
+FrÈdÈric
 91
 AI 58
 2003
