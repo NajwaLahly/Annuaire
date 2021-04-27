@@ -3,6 +3,7 @@ package fr.ai109.projet.annuaire;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 
 public class Main {
 	
@@ -19,13 +20,16 @@ public class Main {
 			BinaryTreeToFile binaryTreeToFile = new BinaryTreeToFile();
 			Trainee trainee = new Trainee();
 			TraineeDao traineeDao = new TraineeDao();
-			
-			binaryTreeToFile.originFileToDestinationFile(reader, raf);
-			Trainee trainee2 = new Trainee("aaa","jhjdh", "kj", "jh", 2000);
+			if (raf.length()==0) {
+				binaryTreeToFile.originFileToDestinationFile(reader, raf);
+			}
+			//binaryTreeToFile.search("ABERWAG", raf);
+			//binaryTreeToFile.originFileToDestinationFile(reader, raf);
+			//Trainee trainee2 = new Trainee("ccc","jhjdh", "kj", "jh", 2000);
 			//raf.seek(raf.length());
 			//System.out.println("pointeur avant inser "+raf.getFilePointer());
 			
-			TraineeDao.addTraineeInRaf(trainee2, raf);
+			//TraineeDao.addTraineeInRaf(trainee2, raf);
 			
 			//binaryTreeToFile.insertTrainee(trainee2, raf);
 			
@@ -34,13 +38,14 @@ public class Main {
 //			traineeDao.getAll(raf, trainee, binaryTreeToFile);
 //			for(Trainee traineeCurrent : traineeDao.traineeList) {
 //					System.out.println(traineeCurrent);
-//				}f
-			long startTime = System.nanoTime();
-			traineeDao.sortTreeInOrder(raf, trainee, binaryTreeToFile);
-			long elapsedTime = System.nanoTime() - startTime;
-			System.out.println("Total sort time in millis: "
-	                + elapsedTime/1000000);
-			for(Trainee traineeCurrent : traineeDao.sortedTree) {
+////				}f
+//			long startTime = System.nanoTime();
+//			traineeDao.sortTreeInOrder(raf, trainee, binaryTreeToFile);
+////			long elapsedTime = System.nanoTime() - startTime;
+////			System.out.println("Total sort time in millis: "
+////	                + elapsedTime/1000000);
+			ArrayList<Trainee> traineeFound = binaryTreeToFile.search(raf, trainee, 1, "claire");
+			for(Trainee traineeCurrent : traineeFound) {
 				System.out.println(traineeCurrent);
 			}
 			raf.close();

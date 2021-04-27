@@ -3,6 +3,8 @@ package fr.ai109.projet.annuaire;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.Stack;
 
 
 public class BinaryTreeToFile {
@@ -23,7 +25,7 @@ public class BinaryTreeToFile {
 			String firstName = reader.readLine();
 			String postCode = reader.readLine();
 			String promo = reader.readLine();
-			
+
 			int year = Integer.parseInt(reader.readLine());
 			trainee = new Trainee(lastName, firstName, postCode, promo, year);
 			reader.readLine();
@@ -50,7 +52,7 @@ public class BinaryTreeToFile {
 	}
 
 	public void insertTrainee(Trainee trainee, RandomAccessFile raf) {
-		
+
 		try {
 			String trainAddSep = trainee.toString() +"*";
 			byte[] byteCurrentTrainee = trainAddSep.getBytes();
@@ -65,34 +67,12 @@ public class BinaryTreeToFile {
 		}
 	}
 
+	public void searchByLastName(String lastName, RandomAccessFile raf) {
 
-	public void originFileToDestinationFile(BufferedReader reader, RandomAccessFile raf) {
-
-
-		try {
-			Trainee trainee = getTraineeFromSourceFile(reader);
-			insertTrainee(trainee, raf);		
-			setRoot(raf);
-			raf.seek(raf.getFilePointer() + nbreByteToRead*2);
-			setEndPosTrainee(raf.getFilePointer());
-			while(reader.ready()) {
-				Trainee traineeCurrent = getTraineeFromSourceFile(reader);
-				setStartPosTrainee(getEndPosTrainee());
-				raf.seek(getStartPosTrainee());
-				insertTrainee(traineeCurrent, raf);	
-				setEndPosTrainee(raf.getFilePointer());
-				insertTraineeAsChild(getRoot(), traineeCurrent, raf);
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
-	public void insertTraineeAsChild(Trainee root, Trainee trainee, RandomAccessFile raf) {
 		Trainee parent = new Trainee();
 		Trainee current = new Trainee();
+		String lastFound = "";
+		setRoot(raf);
 		current = root;
 		long idxEndCurrent = idxEndRoot;
 		String[] resultatReadInFile =new String[2];
@@ -101,13 +81,40 @@ public class BinaryTreeToFile {
 		try {
 			while(posCurrentChildLong != 0) {
 				parent = current;
-				if(current.toString().compareToIgnoreCase(trainee.toString()) < 0) {
-					//current = current.right;
+				if(current.getLastName().compareToIgnoreCase(lastName) < 0) {
 					posCurrentChildLong = readCurrentChildPos(raf, idxEndCurrent, nbreByteToRead);					
+
 				}
-				else {
+				else if(current.getLastName().compareToIgnoreCase(lastName) > 0) {
 					posCurrentChildLong = readCurrentChildPos(raf, idxEndCurrent, 0);
-					//read right child object
+
+				}
+				else{
+					System.out.println(current);
+					posCurrentChildLong = readCurrentChildPos(raf, idxEndCurrent, 0);
+					lastFound = "break";
+					long posCurrentLeft = readCurrentChildPos(raf, idxEndCurrent, 0);
+					long posCurrentRight = readCurrentChildPos(raf, idxEndCurrent, nbreByteToRead);
+					if(posCurrentLeft == 0 && posCurrentRight == 0) {
+						break;					
+					}
+					else if(posCurrentLeft != 0 && posCurrentRight == 0) {
+						posCurrentChildLong = posCurrentLeft;
+					}
+					else if(posCurrentLeft == 0 && posCurrentRight != 0) {
+						posCurrentChildLong = posCurrentRight;
+					}
+					else {
+						resultatReadInFile = readTraineeInDestFile(raf, posCurrentLeft);
+						String CurrentChildString = resultatReadInFile[0];
+						if(current.stringToObject(CurrentChildString).getLastName().compareToIgnoreCase(current.getLastName()) < 0) {
+							idxEndCurrent = Long.parseLong(resultatReadInFile[1]);
+							//current = current.R/L
+							current = current.stringToObject(CurrentChildString);
+							continue;
+						}
+
+					}
 				}
 
 				//read right/left child object
@@ -116,95 +123,214 @@ public class BinaryTreeToFile {
 					String CurrentChildString = resultatReadInFile[0];
 					idxEndCurrent = Long.parseLong(resultatReadInFile[1]);
 					//current = current.R/L
-					current = trainee.stringToObject(CurrentChildString);
+					current = current.stringToObject(CurrentChildString);
 				}
 			}
-			if(parent.toString().compareToIgnoreCase(trainee.toString()) < 0) {
-				raf.seek(idxEndCurrent + nbreByteToRead);
-				raf.writeLong(getStartPosTrainee());				
+			//System.out.println("introuvable");
+			//				if(parent.toString().compareToIgnoreCase(trainee.toString()) < 0) {
+			//					raf.seek(idxEndCurrent + nbreByteToRead);
+			//					raf.writeLong(getStartPosTrainee());				
+			//				}
+			//				else {
+			//					raf.seek(idxEndCurrent);
+			//					raf.writeLong(getStartPosTrainee());
+			//					raf.seek(getEndPosTrainee());
+			//
+			//				}
+
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+
+
+	public ArrayList<Trainee> search(RandomAccessFile raf, Trainee trainee, int criterea, String traineeToFind){
+		long rootTree;
+		String[] resultReadInDestFile = new String[2];
+		ArrayList<Trainee> traineeFound = new ArrayList<Trainee>();
+		try {
+			long startReadPos = 0;
+			Stack<Long> stack = new Stack<Long>();
+			stack.push(startReadPos);
+			resultReadInDestFile = readTraineeInDestFile(raf, startReadPos);
+			long endReadPos = Long.parseLong(resultReadInDestFile[1]);
+			long posRootLeft = readCurrentChildPos(raf, endReadPos, 0);
+			rootTree = posRootLeft;
+			while(true) {
+
+				if (rootTree != 0) {
+					stack.push(rootTree);
+					//root = root.left
+					resultReadInDestFile = readTraineeInDestFile(raf, rootTree);
+					endReadPos = Long.parseLong(resultReadInDestFile[1]);
+					posRootLeft = readCurrentChildPos(raf, endReadPos, 0);
+					rootTree = posRootLeft;
+				}
+				else {
+					if(stack.isEmpty()) {
+						break;
+					}
+					rootTree = stack.pop();
+					resultReadInDestFile = readTraineeInDestFile(raf, rootTree);
+					String[] resultToTab= resultReadInDestFile[0].split("\t"); 
+					if (resultToTab[criterea].compareToIgnoreCase(traineeToFind) == 0){
+						traineeFound.add(trainee.stringToObject(resultReadInDestFile[0]));
+					}
+					endReadPos = Long.parseLong(resultReadInDestFile[1]);
+					//root = root.right
+					long posRootRight = readCurrentChildPos(raf, endReadPos, nbreByteToRead);
+					rootTree = posRootRight;
+				}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return traineeFound;
+	}
+
+
+public void originFileToDestinationFile(BufferedReader reader, RandomAccessFile raf) {
+
+
+	try {
+		Trainee trainee = getTraineeFromSourceFile(reader);
+		insertTrainee(trainee, raf);		
+		setRoot(raf);
+		raf.seek(raf.getFilePointer() + nbreByteToRead*2);
+		setEndPosTrainee(raf.getFilePointer());
+		while(reader.ready()) {
+			Trainee traineeCurrent = getTraineeFromSourceFile(reader);
+			setStartPosTrainee(getEndPosTrainee());
+			raf.seek(getStartPosTrainee());
+			insertTrainee(traineeCurrent, raf);	
+			setEndPosTrainee(raf.getFilePointer());
+			insertTraineeAsChild(getRoot(), traineeCurrent, raf);
+		}
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
+}
+
+public void insertTraineeAsChild(Trainee root, Trainee trainee, RandomAccessFile raf) {
+	Trainee parent = new Trainee();
+	Trainee current = new Trainee();
+	current = root;
+	long idxEndCurrent = idxEndRoot;
+	String[] resultatReadInFile =new String[2];
+	long posCurrentChildLong = idxEndRoot;
+
+	try {
+		while(posCurrentChildLong != 0) {
+			parent = current;
+			if(current.toString().compareToIgnoreCase(trainee.toString()) < 0) {
+				//current = current.right;
+				posCurrentChildLong = readCurrentChildPos(raf, idxEndCurrent, nbreByteToRead);					
 			}
 			else {
-				raf.seek(idxEndCurrent);
-				raf.writeLong(getStartPosTrainee());
-				raf.seek(getEndPosTrainee());
+				posCurrentChildLong = readCurrentChildPos(raf, idxEndCurrent, 0);
 
 			}
-		}catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
-	}
-
-
-	/**
-	 * @param raf
-	 * @param idxCurrent
-	 * @return
-	 * @throws IOException
-	 */
-	public long readCurrentChildPos(RandomAccessFile raf, long idxCurrent, int sideLR) {
-		long posCurrentChildLong = 0;
-		try {
-			raf.seek(idxCurrent + sideLR);
-			posCurrentChildLong = raf.readLong();
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//read right child pos
-
-		return posCurrentChildLong;
-	}
-	//get root
-
-	/**
-	 * @param raf
-	 * @param posTrainee
-	 */
-	public void setRoot(RandomAccessFile raf) {
-
-		String[] resultReadRoot = new String[2];
-		try {
-			resultReadRoot = readTraineeInDestFile(raf, 0);
-			root = root.stringToObject(resultReadRoot[0]);
-			idxEndRoot = Long.parseLong(resultReadRoot[1]);
-
-		}catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
-	}
-
-
-	public String[] readTraineeInDestFile(RandomAccessFile raf, long seekPos) {
-		String[] resultat = new String[2];
-		String resultatString = "";
-		long resultatLong = 0;
-		try {
-			raf.seek(seekPos);
-
-			String byteRead = "";
-			while(!byteRead.equals("*")) {
-				resultatString += new String(byteRead);	
-				byte[] b = new byte[1];
-				raf.read(b);				
-				byteRead = new String(b);
-				resultatLong = raf.getFilePointer();
-
+			//read right/left child object
+			if(posCurrentChildLong != 0) {
+				resultatReadInFile = readTraineeInDestFile(raf, posCurrentChildLong);
+				String CurrentChildString = resultatReadInFile[0];
+				idxEndCurrent = Long.parseLong(resultatReadInFile[1]);
+				//current = current.R/L
+				current = trainee.stringToObject(CurrentChildString);
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-		resultat[0] = resultatString;
-		resultat[1] = new Long(resultatLong).toString();
-		return resultat;
-		//insert trainee Byte in correct pos (algo insert in binary Tree)--> arg (data)
+		if(parent.toString().compareToIgnoreCase(trainee.toString()) < 0) {
+			raf.seek(idxEndCurrent + nbreByteToRead);
+			raf.writeLong(getStartPosTrainee());				
+		}
+		else {
+			raf.seek(idxEndCurrent);
+			raf.writeLong(getStartPosTrainee());
+			raf.seek(getEndPosTrainee());
+
+		}
+	}catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
 	}
-	
-	
+
+}
+
+
+/**
+ * @param raf
+ * @param idxCurrent
+ * @return
+ * @throws IOException
+ */
+public long readCurrentChildPos(RandomAccessFile raf, long idxCurrent, int sideLR) {
+	long posCurrentChildLong = 0;
+	try {
+		raf.seek(idxCurrent + sideLR);
+		posCurrentChildLong = raf.readLong();
+
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	//read right child pos
+
+	return posCurrentChildLong;
+}
+//get root
+
+/**
+ * @param raf
+ * @param posTrainee
+ */
+public void setRoot(RandomAccessFile raf) {
+
+	String[] resultReadRoot = new String[2];
+	try {
+		resultReadRoot = readTraineeInDestFile(raf, 0);
+		root = root.stringToObject(resultReadRoot[0]);
+		idxEndRoot = Long.parseLong(resultReadRoot[1]);
+
+	}catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}	
+}
+
+
+public String[] readTraineeInDestFile(RandomAccessFile raf, long seekPos) {
+	String[] resultat = new String[2];
+	String resultatString = "";
+	long resultatLong = 0;
+	try {
+		raf.seek(seekPos);
+
+		String byteRead = "";
+		while(!byteRead.equals("*")) {
+			resultatString += new String(byteRead);	
+			byte[] b = new byte[1];
+			raf.read(b);				
+			byteRead = new String(b);
+			resultatLong = raf.getFilePointer();
+
+		}
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	resultat[0] = resultatString;
+	resultat[1] = new Long(resultatLong).toString();
+	return resultat;
+	//insert trainee Byte in correct pos (algo insert in binary Tree)--> arg (data)
+}
+
+
 //	public ArrayList<Trainee> sortTreeInOrder(RandomAccessFile raf, Trainee trainee){
 //	long rootTree;
 //	String[] resultReadInDestFile = new String[2];
@@ -293,19 +419,19 @@ public class BinaryTreeToFile {
 //		}
 //		return sortedTree;
 //	}
-	public static long getStartPosTrainee() {
-		return startPosTrainee;
-	}
+public static long getStartPosTrainee() {
+	return startPosTrainee;
+}
 
-	public static void setStartPosTrainee(long startPosTrainee) {
-		BinaryTreeToFile.startPosTrainee = startPosTrainee;
-	}
+public static void setStartPosTrainee(long startPosTrainee) {
+	BinaryTreeToFile.startPosTrainee = startPosTrainee;
+}
 
-	public Trainee getRoot() {
-		return root;
-	}
-	public long getIdxEndRoot() {
-		return idxEndRoot;
-	}
+public Trainee getRoot() {
+	return root;
+}
+public long getIdxEndRoot() {
+	return idxEndRoot;
+}
 
 }
