@@ -1,8 +1,11 @@
 package fr.ai109.projet.annuaire;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -87,7 +90,8 @@ public class ViewUI extends Application{
 		if (raf.length()==0) {
 			binaryTreeToFile.originFileToDestinationFile(reader, raf);
 		}
-
+		//test methode search
+		//Trainee trainee1 = new Trainee("")
 
 		primaryStage.setTitle("ANNUAIRE EQL");
 		primaryStage.setWidth(1600);
@@ -228,7 +232,42 @@ public class ViewUI extends Application{
 				refresh(obs);
 			}
 		});
-
+		
+		search.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				BinaryTreeToFile binaryTreeToFile = new BinaryTreeToFile();
+				
+				try {
+					RandomAccessFile raf = new RandomAccessFile(destinationPath, "rw");
+					TraineeDao traineeDao = new TraineeDao();
+					Trainee trainee = new Trainee();
+					//traineeDao.getAllSorted();
+					String[] criteriaTab = {lastNameT.getText(), firstNameT.getText(), zipCodeT.getText(), batchT.getText(), yearT.getText()};
+					//ArrayList<Trainee> ListFirstCriteria = new ArrayList<Trainee>();
+					ArrayList<Trainee> listFound = new ArrayList<Trainee>();
+					int criteria = 0;
+					for(int i = 0; i < criteriaTab.length; i++) {
+						if (!criteriaTab[i].equals("")) {
+							criteria = i;
+							listFound = traineeDao.search(raf, trainee, binaryTreeToFile, 0, criteriaTab[criteria]);
+							break;
+						}
+					}
+					for(int i = criteria; i < criteriaTab.length; i++) {
+						if(!criteriaTab[i].equals("")) {
+							listFound = traineeDao.searchInList(trainee, i, criteriaTab[i], listFound);
+						}
+					}
+					obs = FXCollections.observableList(listFound);
+					refresh(obs);
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		});
 		delete.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
