@@ -1,5 +1,7 @@
 package fr.ai109.projet.annuaire;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,61 +30,48 @@ public class TraineeDao {
 		
 	}
 	
-	public static void addTrainee(Trainee trainee, RandomAccessFile raf, BinaryTreeToFile binaryTreeToFile){
-
-        try {
-            raf.seek(raf.length());
-            binaryTreeToFile.insertTrainee(trainee, raf);
-            Trainee root = binaryTreeToFile.getRoot();
-            //System.out.println("notre root"+root);
-            binaryTreeToFile.insertTraineeAsChild(root, trainee, raf);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-	
-//	public void sortTreeInOrder(RandomAccessFile raf, Trainee trainee,BinaryTreeToFile binaryTreeToFile){
-//        long rootTree;
-//        String[] resultReadInDestFile = new String[2];
+//	public static void addTrainee(Trainee trainee, RandomAccessFile raf, BinaryTreeToFile binaryTreeToFile){
+//
 //        try {
-//            long startReadPos = 0;
-//
-//            Stack<Long> stack = new Stack<Long>();
-//            stack.push(startReadPos);
-//            resultReadInDestFile = binaryTreeToFile.readTraineeInDestFile(raf, startReadPos);
-//            long endReadPos = Long.parseLong(resultReadInDestFile[1]);
-//            long posRootLeft = binaryTreeToFile.readCurrentChildPos(raf, endReadPos, 0);
-//            rootTree = posRootLeft;
-//            while(true) {
-//
-//                if (rootTree != 0) {
-//                    stack.push(rootTree);
-//                    //root = root.left
-//                    resultReadInDestFile = binaryTreeToFile.readTraineeInDestFile(raf, rootTree);
-//                    endReadPos = Long.parseLong(resultReadInDestFile[1]);
-//                    posRootLeft = binaryTreeToFile.readCurrentChildPos(raf, endReadPos, 0);
-//                    rootTree = posRootLeft;
-//                }
-//                else {
-//                    if(stack.isEmpty()) {
-//                        break;
-//                    }
-//                    rootTree = stack.pop();
-//                    resultReadInDestFile = binaryTreeToFile.readTraineeInDestFile(raf, rootTree);
-//                    sortedTree.add(trainee.stringToObject(resultReadInDestFile[0]));
-//                    endReadPos = Long.parseLong(resultReadInDestFile[1]);
-//                    //root = root.right
-//                    long posRootRight = binaryTreeToFile.readCurrentChildPos(raf, endReadPos, BinaryTreeToFile.nbreByteToRead);
-//                    rootTree = posRootRight;
-//                }
-//            }
+//        	BinaryTreeToFile.setStartPosTrainee(BinaryTreeToFile.getEndPosTrainee());
+//			raf.seek(BinaryTreeToFile.getStartPosTrainee());
+//            binaryTreeToFile.insertTrainee(trainee, raf);
+//            BinaryTreeToFile.setEndPosTrainee(raf.getFilePointer());
+//            Trainee root = binaryTreeToFile.getRoot();
+//            //System.out.println("notre root"+root);
+//            binaryTreeToFile.insertTraineeAsChild(root, trainee, raf);
 //        } catch (Exception e) {
 //            // TODO Auto-generated catch block
 //            e.printStackTrace();
 //        }
 //    }
-	
+	public static void addTraineeInRaf(Trainee trainee, RandomAccessFile raf){
+
+        
+        try {
+        	
+                       
+            BinaryTreeToFile bf = new BinaryTreeToFile();
+            BufferedReader reader = new BufferedReader(new FileReader(Main.originPath));
+            Trainee traineeRoot = bf.getTraineeFromSourceFile(reader);
+            
+            BinaryTreeToFile.setEndPosTrainee(raf.length());           
+			bf.setRoot(raf);
+            raf.seek(raf.length());            
+            BinaryTreeToFile.setStartPosTrainee(BinaryTreeToFile.getEndPosTrainee());
+            raf.seek(BinaryTreeToFile.getStartPosTrainee());
+            bf.insertTrainee(trainee, raf);
+            BinaryTreeToFile.setEndPosTrainee(raf.getFilePointer());
+            Trainee root = bf.getRoot();
+            bf.insertTraineeAsChild(root, trainee, raf);
+            
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+	//code Fatsah
 	public void sortTreeInOrder(RandomAccessFile raf, Trainee trainee, BinaryTreeToFile binaryTreeToFile){
 		String rootTree;
 		String[] resultReadInDestFile = new String[2];
@@ -132,4 +121,5 @@ public class TraineeDao {
 		}
 		
 	}
+
 }
