@@ -265,8 +265,8 @@ public class ViewUI extends Application{
 	private BorderPane setTopViewRight() {
 		BorderPane topViewRight = new BorderPane();
 		topViewRight.setStyle("-fx-background-color:papayawhip");
-		ImageView iv = new ImageView(getClass().getResource(imagePath).toString());
-		topViewRight.setCenter(iv);
+		//ImageView iv = new ImageView(getClass().getResource(imagePath).toString());
+		//topViewRight.setCenter(iv);
 		topViewRight.setMinWidth(400);
 		topViewRight.setMinHeight(500);
 		return topViewRight;
