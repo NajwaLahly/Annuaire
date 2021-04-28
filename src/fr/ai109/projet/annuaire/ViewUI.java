@@ -245,21 +245,25 @@ public class ViewUI extends Application{
 					//traineeDao.getAllSorted();
 					String[] criteriaTab = {lastNameT.getText(), firstNameT.getText(), zipCodeT.getText(), batchT.getText(), yearT.getText()};
 					//ArrayList<Trainee> ListFirstCriteria = new ArrayList<Trainee>();
-					ArrayList<Trainee> listFound = new ArrayList<Trainee>();
+					//ArrayList<Trainee> listFound = new ArrayList<Trainee>();
 					int criteria = 0;
 					for(int i = 0; i < criteriaTab.length; i++) {
 						if (!criteriaTab[i].equals("")) {
 							criteria = i;
-							listFound = traineeDao.search(raf, trainee, binaryTreeToFile, criteria, criteriaTab[criteria]);
+							traineeDao.search(raf, trainee, binaryTreeToFile, criteria, criteriaTab[criteria]);
 							break;
 						}
 					}
 					for(int i = criteria; i < criteriaTab.length; i++) {
 						if(!criteriaTab[i].equals("")) {
-							listFound = traineeDao.searchInList(trainee, i, criteriaTab[i], listFound);
+							traineeDao.searchInList(trainee, i, criteriaTab[i], TraineeDao.Found, TraineeDao.startIdxFound);
 						}
 					}
-					obs = FXCollections.observableList(listFound);
+//					System.out.println("***********");
+//					for(Long idx:TraineeDao.idxFoundFiltered) {
+//						System.out.println(idx);
+//					}
+					obs = FXCollections.observableList(TraineeDao.FoundFiltered);
 					refresh(obs);
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block

@@ -12,7 +12,10 @@ import java.util.Stack;
 public class TraineeDao {
 
 	public static ArrayList<Trainee> sortedList = new ArrayList<Trainee>();
-
+	public static ArrayList<Trainee> Found = new ArrayList<Trainee>();
+	public static ArrayList<Long> startIdxFound = new ArrayList<Long>();
+	public static ArrayList<Trainee> FoundFiltered = new ArrayList<Trainee>();
+	public static ArrayList<Long> idxFoundFiltered = new ArrayList<Long>();
 
 	public TraineeDao (){
 		RandomAccessFile raf= null;
@@ -109,6 +112,8 @@ public class TraineeDao {
 		long rootTree;
 		String[] resultReadInDestFile = new String[2];
 		ArrayList<Trainee> traineeFound = new ArrayList<Trainee>();
+		ArrayList<Long> startIdxForTraineeFound = new ArrayList<Long>();
+
 		try {
 			long startReadPos = 0;
 			Stack<Long> stack = new Stack<Long>();
@@ -136,6 +141,7 @@ public class TraineeDao {
 					String[] resultToTab= resultReadInDestFile[0].split("\t"); 
 					if (resultToTab[critereaIdx].compareToIgnoreCase(traineeToFind) == 0){
 						traineeFound.add(trainee.stringToObject(resultReadInDestFile[0]));
+						startIdxForTraineeFound.add(rootTree);
 					}
 					endReadPos = Long.parseLong(resultReadInDestFile[1]);
 					//root = root.right
@@ -144,6 +150,8 @@ public class TraineeDao {
 				}
 
 			}
+			Found = traineeFound;
+			startIdxFound = startIdxForTraineeFound;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -195,16 +203,18 @@ public class TraineeDao {
 
 
 
-	public ArrayList<Trainee> searchInList(Trainee trainee, int critereaIdx, String traineeToFind ,ArrayList<Trainee> list){
-		ArrayList<Trainee> meetCriterea = new ArrayList<Trainee>();
-		for(Trainee t:list) {
-			String[] traineeTab = t.toString().split("\t");
+	public void searchInList(Trainee trainee, int critereaIdx, String traineeToFind ,ArrayList<Trainee> list, ArrayList<Long> listIdx){
+		ArrayList<Trainee> traineeFoundFiltered = new ArrayList<Trainee>();
+		ArrayList<Long> idxTraineeFoundFiltered = new ArrayList<Long>();
+
+		for(int i = 0; i < list.size(); i++) {
+			String[] traineeTab = list.get(i).toString().split("\t");
 			if(traineeTab[critereaIdx].compareToIgnoreCase(traineeToFind) == 0) {
-				meetCriterea.add(t);
+				traineeFoundFiltered.add(list.get(i));
+				idxTraineeFoundFiltered.add(listIdx.get(i));
 			}
 		}
-		return meetCriterea;
-
+	FoundFiltered = traineeFoundFiltered;
+	idxFoundFiltered = idxTraineeFoundFiltered;
 	}
-
 }
