@@ -88,11 +88,17 @@ public class ViewUI extends Application{
 		BufferedReader reader = new BufferedReader(new FileReader(originPath));
 		RandomAccessFile raf = new RandomAccessFile(destinationPath, "rw");
 		Trainee trainee = new Trainee();
+		
 		if (raf.length()==0) {
 			binaryTreeToFile.originFileToDestinationFile(reader, raf);
 		}
+		TraineeDao traineeDao = new TraineeDao();
+		traineeDao.deleteTraineeInRaf(raf, 93, trainee, binaryTreeToFile);
 		
-		binaryTreeToFile.findParent(0, raf, trainee);
+		traineeDao.sortTreeInOrder(raf, trainee, binaryTreeToFile);
+		for(Trainee t:TraineeDao.sortedList) {
+			System.out.println(t);
+		}
 		//test methode search
 		//Trainee trainee1 = new Trainee("")
 
@@ -111,7 +117,7 @@ public class ViewUI extends Application{
 
 		//2) tableView
 
-		TraineeDao traineeDao = new TraineeDao();
+		//TraineeDao traineeDao = new TraineeDao();
 		obs = FXCollections.observableList(traineeDao.getAllSorted());
 		TableView<Trainee> tableView = getTable(obs);
 
