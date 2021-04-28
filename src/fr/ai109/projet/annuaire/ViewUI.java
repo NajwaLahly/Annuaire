@@ -93,7 +93,8 @@ public class ViewUI extends Application{
 			binaryTreeToFile.originFileToDestinationFile(reader, raf);
 		}
 		TraineeDao traineeDao = new TraineeDao();
-		traineeDao.deleteTraineeInRaf(raf, 93, trainee, binaryTreeToFile);
+//		binaryTreeToFile.findParent(43776, raf, trainee);
+		traineeDao.deleteTraineeInRaf(raf, 44, trainee, binaryTreeToFile);
 		
 		traineeDao.sortTreeInOrder(raf, trainee, binaryTreeToFile);
 		for(Trainee t:TraineeDao.sortedList) {

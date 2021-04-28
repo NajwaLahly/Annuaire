@@ -166,14 +166,14 @@ public class TraineeDao {
 
 		try {
 			resultReadTraineeToDelete = binaryTreeToFile.readTraineeInDestFile(raf, postraineeToDelete);
-			long traineeToDeleteLeftChildPos = binaryTreeToFile.readCurrentChildPos(raf,Long.parseLong(resultReadTraineeToDelete[1]),0);
-			long traineeToDeleteRightChildPos = binaryTreeToFile.readCurrentChildPos(raf,Long.parseLong(resultReadTraineeToDelete[1]), BinaryTreeToFile.nbreByteToRead);
+			long traineeToDeleteLeftChildPos = binaryTreeToFile.readCurrentChildPos(raf,Long.parseLong(resultReadTraineeToDelete[1]),0);//pos 7.5
+			long traineeToDeleteRightChildPos = binaryTreeToFile.readCurrentChildPos(raf,Long.parseLong(resultReadTraineeToDelete[1]), BinaryTreeToFile.nbreByteToRead);//pos 9
 
 			String[] resultatReadParent = new String[2];
 
 			long[] parent = new long[2];
-			parent = binaryTreeToFile.findParent(postraineeToDelete, raf, trainee);
-			resultatReadParent = binaryTreeToFile.readTraineeInDestFile(raf, parent[0]);
+			parent = binaryTreeToFile.findParent(postraineeToDelete, raf, trainee);//start de 12
+			resultatReadParent = binaryTreeToFile.readTraineeInDestFile(raf, parent[0]);//fin du 12
 
 			if (traineeToDeleteLeftChildPos==0 && traineeToDeleteRightChildPos==0){  //case TraineeToDelete has no child
 				raf.seek(Long.parseLong(resultatReadParent[1]) + parent[1]);
@@ -193,29 +193,45 @@ public class TraineeDao {
 			else {
 				long traineeToDeleteLeftGrandChildPos = traineeToDeleteRightChildPos; //initialisation diff de 0
 				long successor = 0;
-				resultReadTraineeToDeleteChild = binaryTreeToFile.readTraineeInDestFile(raf, traineeToDeleteRightChildPos);
+				resultReadTraineeToDeleteChild = binaryTreeToFile.readTraineeInDestFile(raf, traineeToDeleteRightChildPos);//position start de 8
 				while(traineeToDeleteLeftGrandChildPos != 0) {
-					traineeToDeleteLeftGrandChildPos= binaryTreeToFile.readCurrentChildPos(raf, Long.parseLong(resultReadTraineeToDeleteChild[1]),0);
+					traineeToDeleteLeftGrandChildPos= binaryTreeToFile.readCurrentChildPos(raf, Long.parseLong(resultReadTraineeToDeleteChild[1]),0);//pos start 7.5// pos start 7.3// 0
 
-					resultReadTraineeToDeleteChild = binaryTreeToFile.readTraineeInDestFile(raf, traineeToDeleteLeftGrandChildPos);
 
 					if(traineeToDeleteLeftGrandChildPos != 0) {
-						successor = traineeToDeleteLeftGrandChildPos;
-						resultReadSuccessor = resultReadTraineeToDeleteChild;
+						resultReadTraineeToDeleteChild = binaryTreeToFile.readTraineeInDestFile(raf, traineeToDeleteLeftGrandChildPos);//position end 7.5 // position end 7.3
+						successor = traineeToDeleteLeftGrandChildPos;//successor = pos start 7.5// successor = pos start 7.3
+						resultReadSuccessor = resultReadTraineeToDeleteChild;//resultReadsuccessor = position End de 7.5 // pos end 7.3
 					}
 				}
-
-				raf.seek(Long.parseLong(resultatReadParent[1]) + parent[1]);
-				raf.writeLong(successor);		
-
+				
 				long resultReadSuccessorRightPos = binaryTreeToFile.readCurrentChildPos(raf, Long.parseLong(resultReadSuccessor[1]),
-						BinaryTreeToFile.nbreByteToRead);
+						BinaryTreeToFile.nbreByteToRead);//pos start droite de 7.3 (pos de 7.4)
 				long[] parentSuccessor = new long[2];
-				parentSuccessor = binaryTreeToFile.findParent(successor, raf, trainee);
-				resultReadParentSuccessor = binaryTreeToFile.readTraineeInDestFile(raf, parentSuccessor[0]);
+				parentSuccessor = binaryTreeToFile.findParent(successor, raf, trainee);// pos start parent de 7.3 (pos 7.5)
+				resultReadParentSuccessor = binaryTreeToFile.readTraineeInDestFile(raf, parentSuccessor[0]);//pos end 7.5
 
-				raf.seek(Long.parseLong(resultReadParentSuccessor[1]) + parentSuccessor[1]);
-				raf.writeLong(resultReadSuccessorRightPos);			
+				raf.seek(Long.parseLong(resultReadSuccessor[1]));
+				raf.writeLong(traineeToDeleteLeftChildPos);
+				
+				raf.seek(Long.parseLong(resultReadSuccessor[1]) + BinaryTreeToFile.nbreByteToRead);
+				raf.writeLong(traineeToDeleteRightChildPos);
+				
+				raf.seek(Long.parseLong(resultReadParentSuccessor[1]) + parentSuccessor[1]);//se mettre ds end pos 7.5
+				raf.writeLong(resultReadSuccessorRightPos);//ecrire pos de 7.4
+				
+				//succ = pos start  7.3 //resultReadSuccessor = position end 7.3
+				raf.seek(Long.parseLong(resultatReadParent[1]) + parent[1]);//se mettre à fin du 12
+				raf.writeLong(successor);//ecrire 	pos start 7.3	
+
+				
+				
+//				raf.seek(Long.parseLong(resultReadSuccessor[1]) + BinaryTreeToFile.nbreByteToRead);
+//                raf.writeLong(traineeToDeleteRightChildPos); 
+//                String[] tab = new String[2];
+//                tab = binaryTreeToFile.readTraineeInDestFile(raf, traineeToDeleteRightChildPos);
+//                raf.seek(Long.parseLong(tab[1]));
+//                raf.writeLong(traineeToDeleteLeftGrandChildPos);
 			}
 		}catch (Exception e) {
 			// TODO Auto-generated catch block
