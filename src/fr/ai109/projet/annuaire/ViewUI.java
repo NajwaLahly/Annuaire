@@ -87,9 +87,12 @@ public class ViewUI extends Application{
 		BinaryTreeToFile binaryTreeToFile = new BinaryTreeToFile();
 		BufferedReader reader = new BufferedReader(new FileReader(originPath));
 		RandomAccessFile raf = new RandomAccessFile(destinationPath, "rw");
+		Trainee trainee = new Trainee();
 		if (raf.length()==0) {
 			binaryTreeToFile.originFileToDestinationFile(reader, raf);
 		}
+		
+		binaryTreeToFile.findParent(0, raf, trainee);
 		//test methode search
 		//Trainee trainee1 = new Trainee("")
 
@@ -185,6 +188,9 @@ public class ViewUI extends Application{
 		Button help = new Button("HELP");
 		help.setFont(new Font("Cambria",16));
 		help.setStyle("-fx-background-color:red");
+		Button reset = new Button("RESET");
+		reset.setFont(new Font("Cambria",16));
+		reset.setStyle("-fx-background-color:grey");
 
 		Label titre = new Label("BIENVENUE DANS L'ANNUAIRE EQL");
 		titre.setFont(new Font("Cambria",26));
@@ -214,6 +220,8 @@ public class ViewUI extends Application{
 		topViewLeft.addRow(3,update, zipCode,zipCodeT);
 		topViewLeft.addRow(4, search, batch,batchT);
 		topViewLeft.addRow(5, help, year,yearT);
+		topViewLeft.addRow(6, reset);
+
 
 		topViewLeft.setHgap(100);;//comment ça marche?
 		topViewLeft.setVgap(45);
@@ -299,7 +307,15 @@ public class ViewUI extends Application{
 
 			}
 		});
+		
+		reset.setOnAction(new EventHandler<ActionEvent>() {
 
+			@Override
+			public void handle(ActionEvent event) {
+				obs = FXCollections.observableList(TraineeDao.sortedList);
+				refresh(obs);
+			}
+		});
 
 
 		return topViewLeft;

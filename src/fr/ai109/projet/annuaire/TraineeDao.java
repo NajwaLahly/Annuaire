@@ -108,7 +108,7 @@ public class TraineeDao {
 		}
 	}
 
-	public ArrayList<Trainee> search(RandomAccessFile raf, Trainee trainee, BinaryTreeToFile binaryTreeToFile, int critereaIdx, String traineeToFind){
+	public void search(RandomAccessFile raf, Trainee trainee, BinaryTreeToFile binaryTreeToFile, int critereaIdx, String traineeToFind){
 		long rootTree;
 		String[] resultReadInDestFile = new String[2];
 		ArrayList<Trainee> traineeFound = new ArrayList<Trainee>();
@@ -156,7 +156,6 @@ public class TraineeDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return traineeFound;
 	}
 
 	
