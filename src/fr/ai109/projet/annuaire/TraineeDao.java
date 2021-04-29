@@ -261,7 +261,7 @@ public class TraineeDao {
 
 
 			BinaryTreeToFile bf = new BinaryTreeToFile();
-			BufferedReader reader = new BufferedReader(new FileReader(Main.originPath));
+			BufferedReader reader = new BufferedReader(new FileReader(ViewUI.originPath));
 			Trainee traineeRoot = bf.getTraineeFromSourceFile(reader);
 
 			BinaryTreeToFile.setEndPosTrainee(raf.length());           

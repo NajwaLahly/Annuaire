@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.RandomAccessFile;
-import java.util.ArrayList;
 
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -20,7 +19,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -36,14 +34,28 @@ public class ViewUI extends Application{
 	static String originPath = "stagiaires.txt";
 	static String destinationPath = "BinaryTreeFile.txt";
 	private BorderPane primaryRoot = new BorderPane();
-	private HBox topView = new HBox(0);
 	private Pane bottomView = new Pane();
-	private TextField lastNameT;
+	private BorderPane topView = new BorderPane();
+	private HBox topViewBottom = new HBox(0);
+	private TextField lastNameT = new TextField();
 	private TextField firstNameT = new TextField();
 	private TextField zipCodeT = new TextField();
 	private TextField batchT = new TextField();
 	private TextField yearT = new TextField();
-	public boolean access = false;
+	private TextField passwordT = new TextField();
+
+	public Button ok;
+	private boolean access = false;
+
+	public boolean isAccess() {
+		return access;
+	}
+
+
+	public void setAccess(boolean access) {
+		this.access = access;
+	}
+
 
 	public String getImagePath() {
 		return imagePath;
@@ -122,7 +134,7 @@ public class ViewUI extends Application{
 
 		TableView<Trainee> tableView = new TableView<Trainee>(observableTrainees);
 
-		tableView.setMinHeight(400);
+		tableView.setMaxHeight(700);
 		tableView.setMinWidth(1600);
 
 		TableColumn<Trainee, String> colLastName = new TableColumn<Trainee, String>("NOM");
@@ -146,6 +158,12 @@ public class ViewUI extends Application{
 		//Ajuster la taille du tableau a son contenu
 		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
+		TraineeDao traineeDao = new TraineeDao();
+		BinaryTreeToFile binaryTreeToFile = new BinaryTreeToFile();
+		RandomAccessFile raf;
+		Trainee trainee = new Trainee();
+		try {
+			raf = new RandomAccessFile(destinationPath, "rw");
 		tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Trainee>() {
 
 			@Override
@@ -156,9 +174,26 @@ public class ViewUI extends Application{
 				getBatchT().setText(newValue.getPromo());
 				getZipCodeT().setText(newValue.getPostCode());
 				getYearT().setText(newValue.getYear()+"");
-
+				String[] criteriaTab = {lastNameT.getText(), firstNameT.getText(), zipCodeT.getText(), batchT.getText(), yearT.getText()};
+				int criteria = 0;
+				for(int i = 0; i < criteriaTab.length; i++) {
+					if (!criteriaTab[i].equals("")) {
+						criteria = i;
+						traineeDao.search(raf, trainee, binaryTreeToFile, criteria, criteriaTab[criteria]);
+						break;
+					}
+				}
+				for(int i = criteria; i < criteriaTab.length; i++) {
+					if(!criteriaTab[i].equals("")) {
+						traineeDao.searchInList(trainee, i, criteriaTab[i], TraineeDao.Found, TraineeDao.startIdxFound);
+					}
+				}
 			}
 		});
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		return tableView;
 	}
 
@@ -197,83 +232,134 @@ public class ViewUI extends Application{
 
 		//1) HBox= topView=user interface= hBox with GridPane on the left and BorderPane with icon on the right
 
-		topView.getChildren().addAll(setTopViewLeft(),setTopViewRight());
-
-		//2) tableView
+		
+		//bottomView.getChildren().add(setBottomView());		//2) tableView
 
 		//TraineeDao traineeDao = new TraineeDao();
 		obs = FXCollections.observableList(TraineeDao.sortedList);
 		TableView<Trainee> tableView = getTable(obs);
 
+		topViewBottom.getChildren().addAll(setTopViewLeftBottom(), setTopViewRightBottom());
+		topView.setTop(setTopViewTop());
+		topView.setBottom(topViewBottom);
 
 		//3) pane with export pdf btn
-		setBottomView();
+		//setBottomView();
 
 		//adding three pannels to the primaryRoot borderPane
 		primaryRoot.setTop(topView);
 		primaryRoot.setCenter(tableView);
-		primaryRoot.setBottom(bottomView);
+		primaryRoot.setBottom(setBottomView());
 
 		primaryStage.show();
 	}
 
 
 
-	private Stage setPasswordStage() {
-		Stage passwordStage = new Stage();//passwordStage show() when update/delete btn clicked (admin mode)
-		passwordStage.setWidth(200);
-		passwordStage.setHeight(200);
-		VBox passwordRoot = new VBox(50);
-		passwordRoot.setStyle("-fx-background-color:orange");
-		Label admin = new Label("Entrez le mot de passe administrateur");
-		admin.setFont(new Font("Cambria",16));
-		admin.setMinWidth(200);
-		admin.setWrapText(true);//Ã§a marche pas
-		TextField adminTf = new TextField();
-		Button ok = new Button("OK");
-		ok.setFont(new Font("Cambria",20));
-		ok.setMinWidth(185);
-		passwordRoot.getChildren().addAll(admin,adminTf);
-		Scene passwordScene = new Scene(passwordRoot,300,200);
-		passwordStage.setScene(passwordScene);
-		passwordStage.setResizable(false);
-		if (adminTf.getText().equals("admin")) {
-			access = true;
-		}
-		else {
-			Label tryAgain = new Label("Try Again");
-			tryAgain.setFont(new Font("Cambria",16));
-			tryAgain.setMinWidth(90);
-			passwordRoot.getChildren().addAll(tryAgain);
-		}	
-		return passwordStage;
-	}
+//	private Stage setPasswordStage() {
+//		Stage passwordStage = new Stage();//passwordStage show() when update/delete btn clicked (admin mode)
+//		passwordStage.setWidth(500);
+//		passwordStage.setHeight(500);
+//		VBox passwordRoot = new VBox(50);
+//		passwordRoot.setStyle("-fx-background-color:orange");
+//		Label admin = new Label("Entrez le mot de passe administrateur");
+//		admin.setFont(new Font("Cambria",16));
+//		admin.setMinWidth(200);
+//		admin.setWrapText(true);//Ã§a marche pas
+//		TextField adminTf = new TextField();
+//		passwordRoot.getChildren().addAll(admin,adminTf,ok);
+//		Scene passwordScene = new Scene(passwordRoot,300,200);
+//		passwordStage.setScene(passwordScene);
+//		passwordStage.setResizable(false);
+//
+//		System.out.println("acc"+ isAccess());
+//		return passwordStage;
+//	}
 
 
 	private Stage setHelpStage() {
 		Stage helpStage = new Stage();  //helpStage show() when help btn clicked (for user documentation)
-		helpStage.setTitle("NOTICE D'UTILISATION DU LOGICIEL");
-		helpStage.setWidth(1600);
-		helpStage.setHeight(1000);
-		Pane helpRoot = new Pane(); 
-		helpRoot.setStyle("-fx-background-color:papayawhip");
-		Scene helpScene = new Scene(helpRoot,800,400);
-		helpStage.setScene(helpScene);
-		helpStage.sizeToScene();
-		Label lbl = new Label("This superb software is pretty much self-explaining!\n It is working "
-				+ "on our computer, if it's not working on yours, blame your computer."
-				+ "\n When you request an alphabetical list, it will pop, snackle and snap.");
-		lbl.setFont(new Font("Cambria",16));
-		helpRoot.getChildren().addAll(lbl);
+        helpStage.setTitle("NOTICE D'UTILISATION DU LOGICIEL");
+        helpStage.setWidth(1600);
+        helpStage.setHeight(1000);
+        VBox helpRoot = new VBox(); 
+        helpRoot.setStyle("-fx-background-color:papayawhip");
+        Scene helpScene = new Scene(helpRoot,800,400);
+        helpStage.setScene(helpScene);
+        helpStage.sizeToScene();
+        Label lbl = new Label("ADD : pour ajouter un stagaire à l'Annuaire, il faut remplir les informations du stagaire et cliquer sur le bouton ADD pour l'ajouter.\n"
+                + "\n"
+                + "DELETE : il faut être Administrateur (avoir le mot de passe) pour pouvoir supprimer un stagaire de l'Annuaire.\n"
+                + "\n"
+                + "UPDATE : il faut être Administrateur (avoir le mot de passe) pour pouvoir mettre à jour les informations d'un stagaire.\n"
+                + "\n"
+                + "SEARCH : pour rechercher un ou plusieurs stagaires dans l'Annuaire, la recherche se fait selon plusieurs critères, il faut remplir un champ et cliquer sur le bouton SEARCH.\n"
+                + "\n"
+                + "RESET : pour annuller une recherche et réafficher tous les stagaires.\n"
+                + "\n"
+                + "HELP pour accéder à la NOTICE D'UTILISATION DU LOGICIEL.\n"
+                + "\n"
+                + "EXPORT TO PDF : pour exporter l'Annuaire ou un extrait issu de la recherche au format PDF.\n");
+        lbl.setFont(new Font("Cambria",16));
+        lbl.setWrapText(true);
+        helpRoot.getChildren().addAll(lbl);
 		return helpStage;
 	}
+	
+	private Pane setTopViewTop() {
+		
+		Pane topViewTop = new Pane();
+		topView.setStyle("-fx-background-color:tan");
+		topView.setMinWidth(1600);
+		topView.setMaxHeight(40);
+		Label titre = new Label("BIENVENUE DANS L'ANNUAIRE EQL");
+		titre.setFont(new Font("Cambria",26));
+		titre.relocate(0, 10);
+		
+		Label navMode = new Label("(user mode)");
+		navMode.setFont(new Font("Cambria",15));
+		navMode.setStyle("-fx-text-fill:red");
+		navMode.setMaxWidth(100);
+		navMode.relocate(800, 10);
 
-	private GridPane setTopViewLeft() {
+		Label password = new Label("password");
+		password.setFont(new Font("Cambria",20));
+		passwordT = new TextField();
+		password.relocate(1200, 10);
+		passwordT.relocate(1300, 10);
 
-		GridPane topViewLeft = new GridPane();
-		topViewLeft.setStyle("-fx-background-color:bisque");
-		topViewLeft.setMinHeight(500);
-		topViewLeft.setMinWidth(1200);
+		
+		Button ok = new Button("OK");
+		ok.setFont(new Font("Cambria",20));
+		ok.setMinWidth(80);
+		ok.setMaxHeight(20);
+
+		ok.relocate(1500, 10);
+
+		topViewTop.getChildren().addAll(titre, password, navMode, passwordT,ok);
+		
+		ok.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				if (passwordT.getText().equals("admin")) {
+					setAccess(true);
+					navMode.setStyle("-fx-text-fill:green");
+					navMode.setText("(admin mode)");
+
+			}
+			}
+		});
+		
+		return topViewTop;
+	}
+
+	private GridPane setTopViewLeftBottom() {
+
+		GridPane TopViewLeftBottom = new GridPane();
+		TopViewLeftBottom.setStyle("-fx-background-color:bisque");
+		TopViewLeftBottom.setMaxHeight(500);
+		TopViewLeftBottom.setMinWidth(1200);
 
 		Button add = new Button("ADD");
 		add.setFont(new Font("Cambria",16));
@@ -294,10 +380,8 @@ public class ViewUI extends Application{
 		reset.setFont(new Font("Cambria",16));
 		reset.setStyle("-fx-background-color:grey");
 
-		Label titre = new Label("BIENVENUE DANS L'ANNUAIRE EQL");
-		titre.setFont(new Font("Cambria",26));
-
-
+		
+		
 		Label lastName = new Label("NOM");
 		lastName.setFont(new Font("Cambria",16));
 		Label firstName = new Label("PRENOM");
@@ -316,17 +400,17 @@ public class ViewUI extends Application{
 		yearT = new TextField();
 
 
-		topViewLeft.addRow(0,titre);
-		topViewLeft.addRow(1, add, lastName, lastNameT);
-		topViewLeft.addRow(2, delete, firstName,firstNameT);
-		topViewLeft.addRow(3,update, zipCode,zipCodeT);
-		topViewLeft.addRow(4, search, batch,batchT);
-		topViewLeft.addRow(5, help, year,yearT);
-		topViewLeft.addRow(6, reset);
+		//CenterViewLeft.addRow(0,titre, password, passwordT, ok);
+		TopViewLeftBottom.addRow(1, add, lastName, lastNameT);
+		TopViewLeftBottom.addRow(2, delete, firstName,firstNameT);
+		TopViewLeftBottom.addRow(3,update, zipCode,zipCodeT);
+		TopViewLeftBottom.addRow(4, search, batch,batchT);
+		TopViewLeftBottom.addRow(5, help, year,yearT);
+		TopViewLeftBottom.addRow(6, reset);
 
 
-		topViewLeft.setHgap(100);
-		topViewLeft.setVgap(45);
+		TopViewLeftBottom.setHgap(100);
+		TopViewLeftBottom.setVgap(45);
 
 		TraineeDao traineeDao = new TraineeDao();
 		BinaryTreeToFile binaryTreeToFile = new BinaryTreeToFile();
@@ -374,31 +458,21 @@ public class ViewUI extends Application{
 
 				@Override
 				public void handle(ActionEvent event) {
-					PasswordStage();
-					if (access = true) {
-
-					String[] criteriaTab = {lastNameT.getText(), firstNameT.getText(), zipCodeT.getText(), batchT.getText(), yearT.getText()};
-
-					int criteria = 0;
-					for(int i = 0; i < criteriaTab.length; i++) {
-						if (!criteriaTab[i].equals("")) {
-							criteria = i;
-							traineeDao.search(raf, trainee, binaryTreeToFile, criteria, criteriaTab[criteria]);
-							break;
-						}
-					}
-					for(int i = criteria; i < criteriaTab.length; i++) {
-						if(!criteriaTab[i].equals("")) {
-							traineeDao.searchInList(trainee, i, criteriaTab[i], TraineeDao.Found, TraineeDao.startIdxFound);
-						}
-					}
+					System.out.println(isAccess());
+					if(isAccess()) {
 					traineeDao.deleteTraineeInRaf(raf, TraineeDao.idxFoundFiltered.get(0), trainee, binaryTreeToFile);
 					traineeDao.sortTreeInOrder(raf, trainee, binaryTreeToFile);
 					obs = FXCollections.observableList(TraineeDao.sortedList);
+					System.out.println("jjhjhj");
+					for(Trainee t:TraineeDao.sortedList)
+					{
+						System.out.println(t);
+					}
+					}
 					refresh(obs);
 
 				}
-				}
+				
 			});
 
 			update.setOnAction(new EventHandler<ActionEvent>() {
@@ -430,22 +504,23 @@ public class ViewUI extends Application{
 					refresh(obs);
 				}
 			});
+			
 
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		return topViewLeft;
+		return TopViewLeftBottom;
 	}
 
-	private BorderPane setTopViewRight() {
-		BorderPane topViewRight = new BorderPane();
-		topViewRight.setStyle("-fx-background-color:papayawhip");
+	private BorderPane setTopViewRightBottom() {
+		BorderPane CenterViewRightBottom = new BorderPane();
+		CenterViewRightBottom.setStyle("-fx-background-color:papayawhip");
 		//ImageView iv = new ImageView(getClass().getResource(imagePath).toString());
 		//topViewRight.setCenter(iv);
-		topViewRight.setMinWidth(400);
-		topViewRight.setMinHeight(500);
-		return topViewRight;
+		CenterViewRightBottom.setMinWidth(1000);
+		CenterViewRightBottom.setMaxHeight(500);
+		return CenterViewRightBottom;
 	}
 
 
@@ -470,6 +545,16 @@ public class ViewUI extends Application{
 
 
 		return bottomView;
+	}
+
+	
+	public TextField getPasswordT() {
+		return passwordT;
+	}
+
+
+	public void setPasswordT(TextField passwordT) {
+		this.passwordT = passwordT;
 	}
 
 }
