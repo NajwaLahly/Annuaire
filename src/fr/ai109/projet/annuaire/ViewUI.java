@@ -43,6 +43,7 @@ public class ViewUI extends Application{
 	private TextField zipCodeT = new TextField();
 	private TextField batchT = new TextField();
 	private TextField yearT = new TextField();
+	public boolean access = false;
 
 	public String getImagePath() {
 		return imagePath;
@@ -229,10 +230,22 @@ public class ViewUI extends Application{
 		admin.setMinWidth(200);
 		admin.setWrapText(true);//Ã§a marche pas
 		TextField adminTf = new TextField();
+		Button ok = new Button("OK");
+		ok.setFont(new Font("Cambria",20));
+		ok.setMinWidth(185);
 		passwordRoot.getChildren().addAll(admin,adminTf);
 		Scene passwordScene = new Scene(passwordRoot,300,200);
 		passwordStage.setScene(passwordScene);
 		passwordStage.setResizable(false);
+		if (adminTf.getText().equals("admin")) {
+			access = true;
+		}
+		else {
+			Label tryAgain = new Label("Try Again");
+			tryAgain.setFont(new Font("Cambria",16));
+			tryAgain.setMinWidth(90);
+			passwordRoot.getChildren().addAll(tryAgain);
+		}	
 		return passwordStage;
 	}
 
@@ -312,7 +325,7 @@ public class ViewUI extends Application{
 		topViewLeft.addRow(6, reset);
 
 
-		topViewLeft.setHgap(100);;//comment ça marche?
+		topViewLeft.setHgap(100);
 		topViewLeft.setVgap(45);
 
 		TraineeDao traineeDao = new TraineeDao();
@@ -327,7 +340,7 @@ public class ViewUI extends Application{
 				@Override
 				public void handle(ActionEvent event) {
 					Trainee newTrainee = new Trainee(lastNameT.getText(),firstNameT.getText(),zipCodeT.getText(),batchT.getText(),Integer.parseInt(yearT.getText()));
-					TraineeDao.addTraineeInRaf(newTrainee);
+					traineeDao.addTraineeInRaf(newTrainee);
 					traineeDao.sortTreeInOrder(raf, trainee, binaryTreeToFile);;
 					obs = FXCollections.observableList(TraineeDao.sortedList);							
 					refresh(obs);
@@ -338,10 +351,7 @@ public class ViewUI extends Application{
 				@Override
 				public void handle(ActionEvent event) {
 
-					//traineeDao.getAllSorted();
 					String[] criteriaTab = {lastNameT.getText(), firstNameT.getText(), zipCodeT.getText(), batchT.getText(), yearT.getText()};
-					//ArrayList<Trainee> ListFirstCriteria = new ArrayList<Trainee>();
-					//ArrayList<Trainee> listFound = new ArrayList<Trainee>();
 					int criteria = 0;
 					for(int i = 0; i < criteriaTab.length; i++) {
 						if (!criteriaTab[i].equals("")) {
@@ -355,14 +365,8 @@ public class ViewUI extends Application{
 							traineeDao.searchInList(trainee, i, criteriaTab[i], TraineeDao.Found, TraineeDao.startIdxFound);
 						}
 					}
-					//					System.out.println("***********");
-					//					for(Long idx:TraineeDao.idxFoundFiltered) {
-					//						System.out.println(idx);
-					//					}
 					obs = FXCollections.observableList(TraineeDao.FoundFiltered);
 					refresh(obs);
-
-
 
 				}
 			});
@@ -370,7 +374,8 @@ public class ViewUI extends Application{
 
 				@Override
 				public void handle(ActionEvent event) {
-
+					PasswordStage();
+					if (access = true) {
 
 					String[] criteriaTab = {lastNameT.getText(), firstNameT.getText(), zipCodeT.getText(), batchT.getText(), yearT.getText()};
 
@@ -393,14 +398,18 @@ public class ViewUI extends Application{
 					refresh(obs);
 
 				}
+				}
 			});
 
 			update.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
-				public void handle(ActionEvent event) {
-					setPasswordStage().show();
-					//if adminTf == password, set on action, update trainee
+				public void handle(ActionEvent event) {//faut chercher l'élément à mettre à jour
+					Trainee newTrainee = new Trainee(lastNameT.getText(),firstNameT.getText(),zipCodeT.getText(),batchT.getText(),Integer.parseInt(yearT.getText()));
+					traineeDao.update(newTrainee, TraineeDao.idxFoundFiltered.get(0), trainee, raf, binaryTreeToFile);
+					traineeDao.sortTreeInOrder(raf, trainee, binaryTreeToFile);
+					obs = FXCollections.observableList(TraineeDao.sortedList);
+					refresh(obs);
 
 				}
 			});

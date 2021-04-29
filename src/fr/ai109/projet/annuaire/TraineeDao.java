@@ -82,7 +82,7 @@ public class TraineeDao {
 
 
 
-	public static void addTraineeInRaf(Trainee trainee){
+	public void addTraineeInRaf(Trainee trainee){
 
 		RandomAccessFile raf;
 		try {
@@ -254,7 +254,7 @@ public class TraineeDao {
 	//            e.printStackTrace();
 	//        }
 	//    }
-	public static void addTraineeInRaf(Trainee trainee, RandomAccessFile raf){
+	public void addTraineeInRaf(Trainee trainee, RandomAccessFile raf){
 
 
 		try {
@@ -296,4 +296,10 @@ public class TraineeDao {
 		FoundFiltered = traineeFoundFiltered;
 		idxFoundFiltered = idxTraineeFoundFiltered;
 	}
+	
+	public void update(Trainee newTrainee, long postraineeToUpdate, Trainee trainee ,RandomAccessFile raf, BinaryTreeToFile binaryTreeToFile) {
+		deleteTraineeInRaf(raf, postraineeToUpdate, trainee, binaryTreeToFile);
+		addTraineeInRaf(newTrainee, raf);			
+	}
+
 }
