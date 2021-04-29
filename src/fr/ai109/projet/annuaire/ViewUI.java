@@ -164,32 +164,33 @@ public class ViewUI extends Application{
 		Trainee trainee = new Trainee();
 		try {
 			raf = new RandomAccessFile(destinationPath, "rw");
-		tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Trainee>() {
+			tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Trainee>() {
 
-			@Override
-			public void changed(ObservableValue<? extends Trainee> observable, Trainee oldValue, Trainee newValue) {
-				//On affiche les attributs du personnage sélectionné dans le label:
-				getLastNameT().setText(newValue.getLastName());
-				getFirstNameT().setText(newValue.getFirstName());
-				getBatchT().setText(newValue.getPromo());
-				getZipCodeT().setText(newValue.getPostCode());
-				getYearT().setText(newValue.getYear()+"");
-				String[] criteriaTab = {lastNameT.getText(), firstNameT.getText(), zipCodeT.getText(), batchT.getText(), yearT.getText()};
-				int criteria = 0;
-				for(int i = 0; i < criteriaTab.length; i++) {
-					if (!criteriaTab[i].equals("")) {
-						criteria = i;
-						traineeDao.search(raf, trainee, binaryTreeToFile, criteria, criteriaTab[criteria]);
-						break;
+				@Override
+				public void changed(ObservableValue<? extends Trainee> observable, Trainee oldValue, Trainee newValue) {
+					//On affiche les attributs du personnage sélectionné dans le label:
+					getLastNameT().setText(newValue.getLastName());
+					getFirstNameT().setText(newValue.getFirstName());
+					getBatchT().setText(newValue.getPromo());
+					getZipCodeT().setText(newValue.getPostCode());
+					getYearT().setText(newValue.getYear()+"");
+					String[] criteriaTab = {lastNameT.getText(), firstNameT.getText(), zipCodeT.getText(), batchT.getText(), yearT.getText()};
+					int criteria = 0;
+					for(int i = 0; i < criteriaTab.length; i++) {
+						if (!criteriaTab[i].equals("")) {
+							criteria = i;
+							traineeDao.search(raf, trainee, binaryTreeToFile, criteria, criteriaTab[criteria]);
+							break;
+						}
+					}
+					TraineeDao.FoundFiltered = TraineeDao.Found;
+					for(int i = criteria; i < criteriaTab.length; i++) {
+						if(!criteriaTab[i].equals("")) {
+							traineeDao.searchInList(trainee, i, criteriaTab[i], TraineeDao.FoundFiltered, TraineeDao.startIdxFound);
+						}
 					}
 				}
-				for(int i = criteria; i < criteriaTab.length; i++) {
-					if(!criteriaTab[i].equals("")) {
-						traineeDao.searchInList(trainee, i, criteriaTab[i], TraineeDao.Found, TraineeDao.startIdxFound);
-					}
-				}
-			}
-		});
+			});
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -232,7 +233,7 @@ public class ViewUI extends Application{
 
 		//1) HBox= topView=user interface= hBox with GridPane on the left and BorderPane with icon on the right
 
-		
+
 		//bottomView.getChildren().add(setBottomView());		//2) tableView
 
 		//TraineeDao traineeDao = new TraineeDao();
@@ -256,58 +257,58 @@ public class ViewUI extends Application{
 
 
 
-//	private Stage setPasswordStage() {
-//		Stage passwordStage = new Stage();//passwordStage show() when update/delete btn clicked (admin mode)
-//		passwordStage.setWidth(500);
-//		passwordStage.setHeight(500);
-//		VBox passwordRoot = new VBox(50);
-//		passwordRoot.setStyle("-fx-background-color:orange");
-//		Label admin = new Label("Entrez le mot de passe administrateur");
-//		admin.setFont(new Font("Cambria",16));
-//		admin.setMinWidth(200);
-//		admin.setWrapText(true);//Ã§a marche pas
-//		TextField adminTf = new TextField();
-//		passwordRoot.getChildren().addAll(admin,adminTf,ok);
-//		Scene passwordScene = new Scene(passwordRoot,300,200);
-//		passwordStage.setScene(passwordScene);
-//		passwordStage.setResizable(false);
-//
-//		System.out.println("acc"+ isAccess());
-//		return passwordStage;
-//	}
+	//	private Stage setPasswordStage() {
+	//		Stage passwordStage = new Stage();//passwordStage show() when update/delete btn clicked (admin mode)
+	//		passwordStage.setWidth(500);
+	//		passwordStage.setHeight(500);
+	//		VBox passwordRoot = new VBox(50);
+	//		passwordRoot.setStyle("-fx-background-color:orange");
+	//		Label admin = new Label("Entrez le mot de passe administrateur");
+	//		admin.setFont(new Font("Cambria",16));
+	//		admin.setMinWidth(200);
+	//		admin.setWrapText(true);//Ã§a marche pas
+	//		TextField adminTf = new TextField();
+	//		passwordRoot.getChildren().addAll(admin,adminTf,ok);
+	//		Scene passwordScene = new Scene(passwordRoot,300,200);
+	//		passwordStage.setScene(passwordScene);
+	//		passwordStage.setResizable(false);
+	//
+	//		System.out.println("acc"+ isAccess());
+	//		return passwordStage;
+	//	}
 
 
 	private Stage setHelpStage() {
 		Stage helpStage = new Stage();  //helpStage show() when help btn clicked (for user documentation)
-        helpStage.setTitle("NOTICE D'UTILISATION DU LOGICIEL");
-        helpStage.setWidth(1600);
-        helpStage.setHeight(1000);
-        VBox helpRoot = new VBox(); 
-        helpRoot.setStyle("-fx-background-color:papayawhip");
-        Scene helpScene = new Scene(helpRoot,800,400);
-        helpStage.setScene(helpScene);
-        helpStage.sizeToScene();
-        Label lbl = new Label("ADD : pour ajouter un stagaire à l'Annuaire, il faut remplir les informations du stagaire et cliquer sur le bouton ADD pour l'ajouter.\n"
-                + "\n"
-                + "DELETE : il faut être Administrateur (avoir le mot de passe) pour pouvoir supprimer un stagaire de l'Annuaire.\n"
-                + "\n"
-                + "UPDATE : il faut être Administrateur (avoir le mot de passe) pour pouvoir mettre à jour les informations d'un stagaire.\n"
-                + "\n"
-                + "SEARCH : pour rechercher un ou plusieurs stagaires dans l'Annuaire, la recherche se fait selon plusieurs critères, il faut remplir un champ et cliquer sur le bouton SEARCH.\n"
-                + "\n"
-                + "RESET : pour annuller une recherche et réafficher tous les stagaires.\n"
-                + "\n"
-                + "HELP pour accéder à la NOTICE D'UTILISATION DU LOGICIEL.\n"
-                + "\n"
-                + "EXPORT TO PDF : pour exporter l'Annuaire ou un extrait issu de la recherche au format PDF.\n");
-        lbl.setFont(new Font("Cambria",16));
-        lbl.setWrapText(true);
-        helpRoot.getChildren().addAll(lbl);
+		helpStage.setTitle("NOTICE D'UTILISATION DU LOGICIEL");
+		helpStage.setWidth(1600);
+		helpStage.setHeight(1000);
+		VBox helpRoot = new VBox(); 
+		helpRoot.setStyle("-fx-background-color:papayawhip");
+		Scene helpScene = new Scene(helpRoot,800,400);
+		helpStage.setScene(helpScene);
+		helpStage.sizeToScene();
+		Label lbl = new Label("ADD : pour ajouter un stagaire à l'Annuaire, il faut remplir les informations du stagaire et cliquer sur le bouton ADD pour l'ajouter.\n"
+				+ "\n"
+				+ "DELETE : il faut être Administrateur (avoir le mot de passe) pour pouvoir supprimer un stagaire de l'Annuaire.\n"
+				+ "\n"
+				+ "UPDATE : il faut être Administrateur (avoir le mot de passe) pour pouvoir mettre à jour les informations d'un stagaire.\n"
+				+ "\n"
+				+ "SEARCH : pour rechercher un ou plusieurs stagaires dans l'Annuaire, la recherche se fait selon plusieurs critères, il faut remplir un champ et cliquer sur le bouton SEARCH.\n"
+				+ "\n"
+				+ "RESET : pour annuller une recherche et réafficher tous les stagaires.\n"
+				+ "\n"
+				+ "HELP pour accéder à la NOTICE D'UTILISATION DU LOGICIEL.\n"
+				+ "\n"
+				+ "EXPORT TO PDF : pour exporter l'Annuaire ou un extrait issu de la recherche au format PDF.\n");
+		lbl.setFont(new Font("Cambria",16));
+		lbl.setWrapText(true);
+		helpRoot.getChildren().addAll(lbl);
 		return helpStage;
 	}
-	
+
 	private Pane setTopViewTop() {
-		
+
 		Pane topViewTop = new Pane();
 		topView.setStyle("-fx-background-color:tan");
 		topView.setMinWidth(1600);
@@ -315,7 +316,7 @@ public class ViewUI extends Application{
 		Label titre = new Label("BIENVENUE DANS L'ANNUAIRE EQL");
 		titre.setFont(new Font("Cambria",26));
 		titre.relocate(0, 10);
-		
+
 		Label navMode = new Label("(user mode)");
 		navMode.setFont(new Font("Cambria",15));
 		navMode.setStyle("-fx-text-fill:red");
@@ -328,7 +329,7 @@ public class ViewUI extends Application{
 		password.relocate(1200, 10);
 		passwordT.relocate(1300, 10);
 
-		
+
 		Button ok = new Button("OK");
 		ok.setFont(new Font("Cambria",20));
 		ok.setMinWidth(80);
@@ -337,7 +338,7 @@ public class ViewUI extends Application{
 		ok.relocate(1500, 10);
 
 		topViewTop.getChildren().addAll(titre, password, navMode, passwordT,ok);
-		
+
 		ok.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -347,10 +348,10 @@ public class ViewUI extends Application{
 					navMode.setStyle("-fx-text-fill:green");
 					navMode.setText("(admin mode)");
 
-			}
+				}
 			}
 		});
-		
+
 		return topViewTop;
 	}
 
@@ -380,8 +381,8 @@ public class ViewUI extends Application{
 		reset.setFont(new Font("Cambria",16));
 		reset.setStyle("-fx-background-color:grey");
 
-		
-		
+
+
 		Label lastName = new Label("NOM");
 		lastName.setFont(new Font("Cambria",16));
 		Label firstName = new Label("PRENOM");
@@ -441,13 +442,17 @@ public class ViewUI extends Application{
 						if (!criteriaTab[i].equals("")) {
 							criteria = i;
 							traineeDao.search(raf, trainee, binaryTreeToFile, criteria, criteriaTab[criteria]);
+
 							break;
 						}
 					}
+
+					TraineeDao.FoundFiltered = TraineeDao.Found;
 					for(int i = criteria; i < criteriaTab.length; i++) {
 						if(!criteriaTab[i].equals("")) {
-							traineeDao.searchInList(trainee, i, criteriaTab[i], TraineeDao.Found, TraineeDao.startIdxFound);
+							traineeDao.searchInList(trainee, i, criteriaTab[i], TraineeDao.FoundFiltered, TraineeDao.startIdxFound);
 						}
+
 					}
 					obs = FXCollections.observableList(TraineeDao.FoundFiltered);
 					refresh(obs);
@@ -458,33 +463,31 @@ public class ViewUI extends Application{
 
 				@Override
 				public void handle(ActionEvent event) {
-					System.out.println(isAccess());
 					if(isAccess()) {
-					traineeDao.deleteTraineeInRaf(raf, TraineeDao.idxFoundFiltered.get(0), trainee, binaryTreeToFile);
-					traineeDao.sortTreeInOrder(raf, trainee, binaryTreeToFile);
-					obs = FXCollections.observableList(TraineeDao.sortedList);
-					System.out.println("jjhjhj");
-					for(Trainee t:TraineeDao.sortedList)
-					{
-						System.out.println(t);
+						traineeDao.deleteTraineeInRaf(raf, TraineeDao.idxFoundFiltered.get(0), trainee, binaryTreeToFile);
+						traineeDao.sortTreeInOrder(raf, trainee, binaryTreeToFile);
+						obs = FXCollections.observableList(TraineeDao.sortedList);
+
 					}
-					}
+
 					refresh(obs);
 
 				}
-				
+
 			});
 
 			update.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent event) {//faut chercher l'élément à mettre à jour
-					Trainee newTrainee = new Trainee(lastNameT.getText(),firstNameT.getText(),zipCodeT.getText(),batchT.getText(),Integer.parseInt(yearT.getText()));
-					traineeDao.update(newTrainee, TraineeDao.idxFoundFiltered.get(0), trainee, raf, binaryTreeToFile);
-					traineeDao.sortTreeInOrder(raf, trainee, binaryTreeToFile);
-					obs = FXCollections.observableList(TraineeDao.sortedList);
-					refresh(obs);
+					if(isAccess()) {
+						Trainee newTrainee = new Trainee(lastNameT.getText(),firstNameT.getText(),zipCodeT.getText(),batchT.getText(),Integer.parseInt(yearT.getText()));
+						traineeDao.update(newTrainee, TraineeDao.idxFoundFiltered.get(0), trainee, raf, binaryTreeToFile);
+						traineeDao.sortTreeInOrder(raf, trainee, binaryTreeToFile);
+						obs = FXCollections.observableList(TraineeDao.sortedList);
+						refresh(obs);
 
+					}
 				}
 			});
 			help.setOnAction(new EventHandler<ActionEvent>() {
@@ -504,7 +507,7 @@ public class ViewUI extends Application{
 					refresh(obs);
 				}
 			});
-			
+
 
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
@@ -547,7 +550,7 @@ public class ViewUI extends Application{
 		return bottomView;
 	}
 
-	
+
 	public TextField getPasswordT() {
 		return passwordT;
 	}
