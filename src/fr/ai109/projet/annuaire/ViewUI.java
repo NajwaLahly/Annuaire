@@ -12,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -45,6 +46,8 @@ public class ViewUI extends Application{
 	private TextField passwordT = new TextField();
 
 	public Button ok;
+	private Button delete= new Button("DELETE");
+	private Button update= new Button("UPDATE");
 	private boolean access = false;
 
 	public boolean isAccess() {
@@ -344,9 +347,10 @@ public class ViewUI extends Application{
 			@Override
 			public void handle(ActionEvent event) {
 				if (passwordT.getText().equals("admin")) {
-					setAccess(true);
 					navMode.setStyle("-fx-text-fill:green");
 					navMode.setText("(admin mode)");
+					delete.setDisable(false);
+					update.setDisable(false);
 
 				}
 			}
@@ -361,6 +365,8 @@ public class ViewUI extends Application{
 		TopViewLeftBottom.setStyle("-fx-background-color:bisque");
 		TopViewLeftBottom.setMaxHeight(500);
 		TopViewLeftBottom.setMinWidth(1200);
+		
+		
 
 		Button add = new Button("ADD");
 		add.setFont(new Font("Cambria",16));
@@ -368,10 +374,10 @@ public class ViewUI extends Application{
 		Button search = new Button("SEARCH");
 		search.setFont(new Font("Cambria",16));
 		search.setStyle("-fx-background-color:peru");
-		Button update = new Button("UPDATE");
+		//Button update = new Button("UPDATE");
 		update.setFont(new Font("Cambria",16));
 		update.setStyle("-fx-background-color:orange");
-		Button delete= new Button("DELETE");
+		//Button delete= new Button("DELETE");
 		delete.setFont(new Font("Cambria",16));
 		delete.setStyle("-fx-background-color:orange");
 		Button help = new Button("HELP");
@@ -380,6 +386,9 @@ public class ViewUI extends Application{
 		Button reset = new Button("RESET");
 		reset.setFont(new Font("Cambria",16));
 		reset.setStyle("-fx-background-color:grey");
+		
+		delete.setDisable(true);
+		update.setDisable(true);
 
 
 
@@ -408,6 +417,13 @@ public class ViewUI extends Application{
 		TopViewLeftBottom.addRow(4, search, batch,batchT);
 		TopViewLeftBottom.addRow(5, help, year,yearT);
 		TopViewLeftBottom.addRow(6, reset);
+		
+		GridPane.setMargin(add, new Insets(0, 0, 0, 10));
+		GridPane.setMargin(delete, new Insets(0, 0, 0, 10));
+		GridPane.setMargin(update, new Insets(0, 0, 0, 10));
+		GridPane.setMargin(search, new Insets(0, 0, 0, 10));
+		GridPane.setMargin(help, new Insets(0, 0, 0, 10));
+		GridPane.setMargin(reset, new Insets(0, 0, 10, 10));
 
 
 		TopViewLeftBottom.setHgap(100);
@@ -463,13 +479,11 @@ public class ViewUI extends Application{
 
 				@Override
 				public void handle(ActionEvent event) {
-					if(isAccess()) {
 						traineeDao.deleteTraineeInRaf(raf, TraineeDao.idxFoundFiltered.get(0), trainee, binaryTreeToFile);
 						traineeDao.sortTreeInOrder(raf, trainee, binaryTreeToFile);
 						obs = FXCollections.observableList(TraineeDao.sortedList);
 
-					}
-
+					
 					refresh(obs);
 
 				}
@@ -480,14 +494,13 @@ public class ViewUI extends Application{
 
 				@Override
 				public void handle(ActionEvent event) {//faut chercher l'élément à mettre à jour
-					if(isAccess()) {
 						Trainee newTrainee = new Trainee(lastNameT.getText(),firstNameT.getText(),zipCodeT.getText(),batchT.getText(),Integer.parseInt(yearT.getText()));
 						traineeDao.update(newTrainee, TraineeDao.idxFoundFiltered.get(0), trainee, raf, binaryTreeToFile);
 						traineeDao.sortTreeInOrder(raf, trainee, binaryTreeToFile);
 						obs = FXCollections.observableList(TraineeDao.sortedList);
 						refresh(obs);
 
-					}
+					
 				}
 			});
 			help.setOnAction(new EventHandler<ActionEvent>() {
@@ -522,7 +535,7 @@ public class ViewUI extends Application{
 		//ImageView iv = new ImageView(getClass().getResource(imagePath).toString());
 		//topViewRight.setCenter(iv);
 		CenterViewRightBottom.setMinWidth(1000);
-		CenterViewRightBottom.setMaxHeight(500);
+		CenterViewRightBottom.setMaxHeight(700);
 		return CenterViewRightBottom;
 	}
 
