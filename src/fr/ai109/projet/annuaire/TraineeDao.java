@@ -205,6 +205,10 @@ public class TraineeDao {
 					}
 				}
 				
+				if(resultReadSuccessor[1] == null) {
+					System.out.println("kjdk");
+				}
+				
 				long resultReadSuccessorRightPos = binaryTreeToFile.readCurrentChildPos(raf, Long.parseLong(resultReadSuccessor[1]),
 						BinaryTreeToFile.nbreByteToRead);//pos start droite de 7.3 (pos de 7.4)
 				long[] parentSuccessor = new long[2];

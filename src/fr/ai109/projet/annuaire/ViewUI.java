@@ -1,9 +1,20 @@
 package fr.ai109.projet.annuaire;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.pdfjet.A4;
+import com.pdfjet.Cell;
+import com.pdfjet.CoreFont;
+import com.pdfjet.PDF;
+import com.pdfjet.Page;
+import com.pdfjet.Table;
 
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -16,10 +27,13 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -43,12 +57,19 @@ public class ViewUI extends Application{
 	private TextField zipCodeT = new TextField();
 	private TextField batchT = new TextField();
 	private TextField yearT = new TextField();
-	private TextField passwordT = new TextField();
+	private PasswordField passwordT = new PasswordField();
 
-	public Button ok;
+	public Button login;
 	private Button delete= new Button("DELETE");
 	private Button update= new Button("UPDATE");
 	private boolean access = false;
+
+	private TableColumn<Trainee, String> colLastName = new TableColumn<Trainee, String>("NOM");
+	private TableColumn<Trainee, String> colFirstName = new TableColumn<Trainee, String>("PRENOM");
+	private TableColumn<Trainee, Integer> colpostCode = new TableColumn<Trainee, Integer>("DEPARTEMENT");
+	private TableColumn<Trainee, Integer> colPromo = new TableColumn<Trainee, Integer>("PROMOTION");
+	private TableColumn<Trainee, Integer> colYear = new TableColumn<Trainee, Integer>("ANNEE");
+
 
 	public boolean isAccess() {
 		return access;
@@ -140,19 +161,14 @@ public class ViewUI extends Application{
 		tableView.setMaxHeight(700);
 		tableView.setMinWidth(1600);
 
-		TableColumn<Trainee, String> colLastName = new TableColumn<Trainee, String>("NOM");
 		colLastName.setCellValueFactory(new PropertyValueFactory<Trainee, String>("lastName"));
 
-		TableColumn<Trainee, String> colFirstName = new TableColumn<Trainee, String>("PRENOM");
 		colFirstName.setCellValueFactory(new PropertyValueFactory<Trainee, String>("firstName"));
 
-		TableColumn<Trainee, Integer> colpostCode = new TableColumn<Trainee, Integer>("DEPARTEMENT");
 		colpostCode.setCellValueFactory(new PropertyValueFactory<Trainee, Integer>("postCode"));
 
-		TableColumn<Trainee, Integer> colPromo = new TableColumn<Trainee, Integer>("PROMOTION");
 		colPromo.setCellValueFactory(new PropertyValueFactory<Trainee, Integer>("promo"));
 
-		TableColumn<Trainee, Integer> colYear = new TableColumn<Trainee, Integer>("ANNEE");
 		colYear.setCellValueFactory(new PropertyValueFactory<Trainee, Integer>("year"));
 
 		//Donner la colonne a notre tableview
@@ -187,11 +203,15 @@ public class ViewUI extends Application{
 						}
 					}
 					TraineeDao.FoundFiltered = TraineeDao.Found;
+					TraineeDao.idxFoundFiltered = TraineeDao.startIdxFound;
+
 					for(int i = criteria; i < criteriaTab.length; i++) {
 						if(!criteriaTab[i].equals("")) {
-							traineeDao.searchInList(trainee, i, criteriaTab[i], TraineeDao.FoundFiltered, TraineeDao.startIdxFound);
+							traineeDao.searchInList(trainee, i, criteriaTab[i], TraineeDao.FoundFiltered, TraineeDao.idxFoundFiltered);
 						}
 					}
+					System.out.println(TraineeDao.FoundFiltered.get(0));
+					System.out.println(TraineeDao.idxFoundFiltered.get(0));
 				}
 			});
 		} catch (FileNotFoundException e1) {
@@ -224,7 +244,6 @@ public class ViewUI extends Application{
 		//		}
 		//test methode search
 		//Trainee trainee1 = new Trainee("")
-
 		primaryStage.setTitle("ANNUAIRE EQL");
 		primaryStage.setWidth(1600);
 		primaryStage.setHeight(1000);
@@ -271,7 +290,7 @@ public class ViewUI extends Application{
 	//		admin.setMinWidth(200);
 	//		admin.setWrapText(true);//Ã§a marche pas
 	//		TextField adminTf = new TextField();
-	//		passwordRoot.getChildren().addAll(admin,adminTf,ok);
+	//		passwordRoot.getChildren().addAll(admin,adminTf,login);
 	//		Scene passwordScene = new Scene(passwordRoot,300,200);
 	//		passwordStage.setScene(passwordScene);
 	//		passwordStage.setResizable(false);
@@ -321,39 +340,62 @@ public class ViewUI extends Application{
 		titre.relocate(0, 10);
 
 		Label navMode = new Label("(user mode)");
-		navMode.setFont(new Font("Cambria",15));
+		navMode.setFont(new Font("Cambria",25));
 		navMode.setStyle("-fx-text-fill:red");
-		navMode.setMaxWidth(100);
+		navMode.setMaxWidth(180);
 		navMode.relocate(800, 10);
 
 		Label password = new Label("password");
 		password.setFont(new Font("Cambria",20));
-		passwordT = new TextField();
+		//passwordT = new TextField();
+		
 		password.relocate(1200, 10);
 		passwordT.relocate(1300, 10);
 
 
-		Button ok = new Button("OK");
-		ok.setFont(new Font("Cambria",20));
-		ok.setMinWidth(80);
-		ok.setMaxHeight(20);
+		Button login = new Button("Login");
+		login.setFont(new Font("Cambria",20));
+		login.setMinWidth(80);
+		login.setMaxHeight(20);
+		login.relocate(1500, 5);
+		//login.setText("Logout");
+//		Button logout = new Button("Logout");
+//		logout.setFont(new Font("Cambria",20));
+//		logout.setMinWidth(80);
+//		logout.setMaxHeight(20);
+//		logout.relocate(1500, 10);
 
-		ok.relocate(1500, 10);
+		topViewTop.getChildren().addAll(titre, password, navMode, passwordT,login);
+		topViewTop.setPadding(new Insets(0, 0, 5, 0));
 
-		topViewTop.getChildren().addAll(titre, password, navMode, passwordT,ok);
-
-		ok.setOnAction(new EventHandler<ActionEvent>() {
+		login.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
+				if(login.getText() == "Login") {
 				if (passwordT.getText().equals("admin")) {
 					navMode.setStyle("-fx-text-fill:green");
 					navMode.setText("(admin mode)");
 					delete.setDisable(false);
 					update.setDisable(false);
+					login.setText("Logout");
+					passwordT.setVisible(false);
+					password.setVisible(false);
 
 				}
+				}
+				else {
+					navMode.setStyle("-fx-text-fill:red");
+					navMode.setText("(user mode)");
+					login.setText("Login");
+					delete.setDisable(true);
+					update.setDisable(true);
+					passwordT.setVisible(true);
+					password.setVisible(true);
+					passwordT.clear();
+				}
 			}
+				
 		});
 
 		return topViewTop;
@@ -365,8 +407,8 @@ public class ViewUI extends Application{
 		TopViewLeftBottom.setStyle("-fx-background-color:bisque");
 		TopViewLeftBottom.setMaxHeight(500);
 		TopViewLeftBottom.setMinWidth(1200);
-		
-		
+
+
 
 		Button add = new Button("ADD");
 		add.setFont(new Font("Cambria",16));
@@ -386,7 +428,7 @@ public class ViewUI extends Application{
 		Button reset = new Button("RESET");
 		reset.setFont(new Font("Cambria",16));
 		reset.setStyle("-fx-background-color:grey");
-		
+
 		delete.setDisable(true);
 		update.setDisable(true);
 
@@ -417,7 +459,7 @@ public class ViewUI extends Application{
 		TopViewLeftBottom.addRow(4, search, batch,batchT);
 		TopViewLeftBottom.addRow(5, help, year,yearT);
 		TopViewLeftBottom.addRow(6, reset);
-		
+
 		GridPane.setMargin(add, new Insets(0, 0, 0, 10));
 		GridPane.setMargin(delete, new Insets(0, 0, 0, 10));
 		GridPane.setMargin(update, new Insets(0, 0, 0, 10));
@@ -479,11 +521,13 @@ public class ViewUI extends Application{
 
 				@Override
 				public void handle(ActionEvent event) {
-						traineeDao.deleteTraineeInRaf(raf, TraineeDao.idxFoundFiltered.get(0), trainee, binaryTreeToFile);
-						traineeDao.sortTreeInOrder(raf, trainee, binaryTreeToFile);
-						obs = FXCollections.observableList(TraineeDao.sortedList);
+					System.out.println(TraineeDao.FoundFiltered.get(0));
+					System.out.println(TraineeDao.idxFoundFiltered.get(0));
 
-					
+					traineeDao.deleteTraineeInRaf(raf, TraineeDao.idxFoundFiltered.get(0), trainee, binaryTreeToFile);
+					traineeDao.sortTreeInOrder(raf, trainee, binaryTreeToFile);
+					obs = FXCollections.observableList(TraineeDao.sortedList);
+
 					refresh(obs);
 
 				}
@@ -494,13 +538,13 @@ public class ViewUI extends Application{
 
 				@Override
 				public void handle(ActionEvent event) {//faut chercher l'élément à mettre à jour
-						Trainee newTrainee = new Trainee(lastNameT.getText(),firstNameT.getText(),zipCodeT.getText(),batchT.getText(),Integer.parseInt(yearT.getText()));
-						traineeDao.update(newTrainee, TraineeDao.idxFoundFiltered.get(0), trainee, raf, binaryTreeToFile);
-						traineeDao.sortTreeInOrder(raf, trainee, binaryTreeToFile);
-						obs = FXCollections.observableList(TraineeDao.sortedList);
-						refresh(obs);
+					Trainee newTrainee = new Trainee(lastNameT.getText(),firstNameT.getText(),zipCodeT.getText(),batchT.getText(),Integer.parseInt(yearT.getText()));
+					traineeDao.update(newTrainee, TraineeDao.idxFoundFiltered.get(0), trainee, raf, binaryTreeToFile);
+					traineeDao.sortTreeInOrder(raf, trainee, binaryTreeToFile);
+					obs = FXCollections.observableList(TraineeDao.sortedList);
+					refresh(obs);
 
-					
+
 				}
 			});
 			help.setOnAction(new EventHandler<ActionEvent>() {
@@ -530,13 +574,19 @@ public class ViewUI extends Application{
 	}
 
 	private BorderPane setTopViewRightBottom() {
-		BorderPane CenterViewRightBottom = new BorderPane();
-		CenterViewRightBottom.setStyle("-fx-background-color:papayawhip");
-		//ImageView iv = new ImageView(getClass().getResource(imagePath).toString());
-		//topViewRight.setCenter(iv);
-		CenterViewRightBottom.setMinWidth(1000);
-		CenterViewRightBottom.setMaxHeight(700);
-		return CenterViewRightBottom;
+		BorderPane TopViewRightBottom = new BorderPane();
+		TopViewRightBottom.setStyle("-fx-background-color:papayawhip");
+		String x = getClass().getResource(imagePath) + "";
+		Image icon = new Image(getClass().getResource(imagePath) + "");
+		ImageView iv = new ImageView();
+		iv.setImage(icon);
+		
+		TopViewRightBottom.setLeft(iv);
+		TopViewRightBottom.setPadding(new Insets(90, 0, 0, 70));
+		
+		TopViewRightBottom.setMinWidth(1000);
+		TopViewRightBottom.setMaxHeight(500);
+		return TopViewRightBottom;
 	}
 
 
@@ -550,13 +600,76 @@ public class ViewUI extends Application{
 		export.setStyle("-fx-background-color:peru");
 		bottomView.getChildren().addAll(export);
 
-		export.setOnAction(new EventHandler<ActionEvent>() {
+		export.setOnAction(actionEvent -> {
+			// creation du pdf et des pages
+			File out = new File("Trainee.pdf");
+			FileOutputStream fos;
+			try {
+				fos = new FileOutputStream(out);
+				PDF pdf = new PDF(fos);
+				Page page = new Page(pdf, A4.PORTRAIT);
+				//mise en page des titres
+				com.pdfjet.Font f1 = new com.pdfjet.Font(pdf, CoreFont.HELVETICA_BOLD);
+				//mise en page de la data table
+				com.pdfjet.Font f2 = new com.pdfjet.Font(pdf, CoreFont.HELVETICA);
+				//creation de la data table
+				Table table = new Table();
+				List<List<Cell>> tableData = new ArrayList<List<Cell>>();
+				// les ligne de la data table
+				List<Cell> tableRow = new ArrayList<Cell>();
+				// creation de l'en-tête et l'ajouter à la table
+				Cell cell = new Cell(f1, colLastName.getText());
+				tableRow.add(cell);
+				cell = new Cell(f1, colFirstName.getText());
+				tableRow.add(cell);
+				cell = new Cell(f1, colpostCode.getText());
+				tableRow.add(cell);
+				cell = new Cell(f1, colPromo.getText());
+				tableRow.add(cell);
+				cell = new Cell(f1, colYear.getText());
+				tableRow.add(cell);
+				tableData.add(tableRow);
+				// recuperation de data et l'ajout à la table
+				List<Trainee> items = getTable(obs).getItems();
+				for (Trainee train : items) {
+					Cell nom = new Cell(f2, train.getLastName());
+					Cell prenom = new Cell(f2, train.getFirstName());
+					Cell codePostale = new Cell(f2, train.getPostCode());
+					Cell promo = new Cell(f2, train.getPromo());
+					String str = "" + train.getYear();
+					Cell annee = new Cell(f2, str);
+					tableRow = new ArrayList<Cell>();
+					tableRow.add(nom);
+					tableRow.add(prenom);
+					tableRow.add(codePostale);
+					tableRow.add(promo);
+					tableRow.add(annee);
+					tableData.add(tableRow);
+				}
+				table.setData(tableData);
+				table.setPosition(50f, 50f);
+				table.setColumnWidth(0, 150f);
+				table.setColumnWidth(1, 130f);
+				table.setColumnWidth(2, 100f);
+				table.setColumnWidth(3, 80f);
+				table.setColumnWidth(4, 50f);
+				// creation de nouvelles pages tant que on en a besoin 
+				while (true) {
+					table.drawOn(page);
+					if (!table.hasMoreData()) {
+						table.resetRenderedPagesCount();
+						break;	
+					}
+					page = new Page(pdf, A4.PORTRAIT);
+				}
+				fos.flush();
+				pdf.close();
 
-			@Override
-			public void handle(ActionEvent event) {
-				//TODO
-
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			System.out.println("Saved to "+ out.getAbsolutePath());
 		});
 
 
@@ -569,7 +682,7 @@ public class ViewUI extends Application{
 	}
 
 
-	public void setPasswordT(TextField passwordT) {
+	public void setPasswordT(PasswordField passwordT) {
 		this.passwordT = passwordT;
 	}
 
