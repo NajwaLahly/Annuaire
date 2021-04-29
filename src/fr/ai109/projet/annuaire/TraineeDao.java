@@ -18,23 +18,23 @@ public class TraineeDao {
 	public static ArrayList<Long> idxFoundFiltered = new ArrayList<Long>();
 
 	public TraineeDao (){
-		RandomAccessFile raf= null;
-		try {
-			raf = new RandomAccessFile(ViewUI.destinationPath, "rw");
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Trainee trainee = new Trainee();
-		BinaryTreeToFile binaryTreeToFile = new BinaryTreeToFile();
-		sortTreeInOrder(raf, trainee, binaryTreeToFile);
+//		RandomAccessFile raf= null;
+//		try {
+//			raf = new RandomAccessFile(ViewUI.destinationPath, "rw");
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		Trainee trainee = new Trainee();
+//		BinaryTreeToFile binaryTreeToFile = new BinaryTreeToFile();
+//		sortTreeInOrder(raf, trainee, binaryTreeToFile);
 
 	}
 
-	public ArrayList<Trainee> getAllSorted(){
-		return sortedList;
-	}
-
+//	public ArrayList<Trainee> getAllSorted(){
+//		return sortedList;
+//	}
+//
 
 
 	public void sortTreeInOrder(RandomAccessFile raf, Trainee trainee,BinaryTreeToFile binaryTreeToFile){

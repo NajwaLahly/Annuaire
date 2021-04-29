@@ -7,6 +7,8 @@ import java.io.RandomAccessFile;
 import java.util.ArrayList;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,6 +38,72 @@ public class ViewUI extends Application{
 	private BorderPane primaryRoot = new BorderPane();
 	private HBox topView = new HBox(0);
 	private Pane bottomView = new Pane();
+	private TextField lastNameT;
+	private TextField firstNameT = new TextField();
+	private TextField zipCodeT = new TextField();
+	private TextField batchT = new TextField();
+	private TextField yearT = new TextField();
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+
+
+	public TextField getLastNameT() {
+		return lastNameT;
+	}
+
+
+	public void setLastNameT(TextField lastNameT) {
+		this.lastNameT = lastNameT;
+	}
+
+
+	public TextField getFirstNameT() {
+		return firstNameT;
+	}
+
+
+	public void setFirstNameT(TextField firstNameT) {
+		this.firstNameT = firstNameT;
+	}
+
+
+	public TextField getZipCodeT() {
+		return zipCodeT;
+	}
+
+
+	public void setZipCodeT(TextField zipCodeT) {
+		this.zipCodeT = zipCodeT;
+	}
+
+
+	public TextField getBatchT() {
+		return batchT;
+	}
+
+
+	public void setBatchT(TextField batchT) {
+		this.batchT = batchT;
+	}
+
+
+	public TextField getYearT() {
+		return yearT;
+	}
+
+
+	public void setYearT(TextField yearT) {
+		this.yearT = yearT;
+	}
+
+
 	static ObservableList<Trainee> obs = FXCollections.observableArrayList();
 
 	public static void main(String[] args) {
@@ -76,6 +144,20 @@ public class ViewUI extends Application{
 
 		//Ajuster la taille du tableau a son contenu
 		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+		tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Trainee>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Trainee> observable, Trainee oldValue, Trainee newValue) {
+				//On affiche les attributs du personnage sélectionné dans le label:
+				getLastNameT().setText(newValue.getLastName());
+				getFirstNameT().setText(newValue.getFirstName());
+				getBatchT().setText(newValue.getPromo());
+				getZipCodeT().setText(newValue.getPostCode());
+				getYearT().setText(newValue.getYear()+"");
+
+			}
+		});
 		return tableView;
 	}
 
@@ -88,18 +170,18 @@ public class ViewUI extends Application{
 		BufferedReader reader = new BufferedReader(new FileReader(originPath));
 		RandomAccessFile raf = new RandomAccessFile(destinationPath, "rw");
 		Trainee trainee = new Trainee();
-		
+
 		if (raf.length()==0) {
 			binaryTreeToFile.originFileToDestinationFile(reader, raf);
 		}
 		TraineeDao traineeDao = new TraineeDao();
-//		binaryTreeToFile.findParent(43776, raf, trainee);
-		traineeDao.deleteTraineeInRaf(raf, 44, trainee, binaryTreeToFile);
-		
+		//		binaryTreeToFile.findParent(43776, raf, trainee);
+		//traineeDao.deleteTraineeInRaf(raf, 44, trainee, binaryTreeToFile);
+
 		traineeDao.sortTreeInOrder(raf, trainee, binaryTreeToFile);
-		for(Trainee t:TraineeDao.sortedList) {
-			System.out.println(t);
-		}
+		//		for(Trainee t:TraineeDao.sortedList) {
+		//			System.out.println(t);
+		//		}
 		//test methode search
 		//Trainee trainee1 = new Trainee("")
 
@@ -119,7 +201,7 @@ public class ViewUI extends Application{
 		//2) tableView
 
 		//TraineeDao traineeDao = new TraineeDao();
-		obs = FXCollections.observableList(traineeDao.getAllSorted());
+		obs = FXCollections.observableList(TraineeDao.sortedList);
 		TableView<Trainee> tableView = getTable(obs);
 
 
@@ -214,11 +296,11 @@ public class ViewUI extends Application{
 		Label year = new Label("ANNEE");
 		year.setFont(new Font("Cambria",16));
 
-		TextField lastNameT = new TextField();
-		TextField firstNameT = new TextField();
-		TextField zipCodeT = new TextField();
-		TextField batchT = new TextField();
-		TextField yearT = new TextField();
+		lastNameT = new TextField();
+		firstNameT = new TextField();
+		zipCodeT = new TextField();
+		batchT = new TextField();
+		yearT = new TextField();
 
 
 		topViewLeft.addRow(0,titre);
@@ -233,30 +315,29 @@ public class ViewUI extends Application{
 		topViewLeft.setHgap(100);;//comment ça marche?
 		topViewLeft.setVgap(45);
 
-		add.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				Trainee newTrainee = new Trainee(lastNameT.getText(),firstNameT.getText(),zipCodeT.getText(),batchT.getText(),Integer.parseInt(yearT.getText()));
-				TraineeDao.addTraineeInRaf(newTrainee);
-				TraineeDao traineeDao = new TraineeDao();
-				//traineeDao.getAllSorted();
-				obs = FXCollections.observableList(traineeDao.getAllSorted());
-								for(Trainee t:TraineeDao.sortedList) {
-									System.out.println(t);	
-								}
-				refresh(obs);
-			}
-		});
-		
-		search.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				BinaryTreeToFile binaryTreeToFile = new BinaryTreeToFile();
-				
-				try {
-					RandomAccessFile raf = new RandomAccessFile(destinationPath, "rw");
-					TraineeDao traineeDao = new TraineeDao();
-					Trainee trainee = new Trainee();
+		TraineeDao traineeDao = new TraineeDao();
+		BinaryTreeToFile binaryTreeToFile = new BinaryTreeToFile();
+		RandomAccessFile raf;
+		Trainee trainee = new Trainee();
+		try {
+			raf = new RandomAccessFile(destinationPath, "rw");
+
+
+			add.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					Trainee newTrainee = new Trainee(lastNameT.getText(),firstNameT.getText(),zipCodeT.getText(),batchT.getText(),Integer.parseInt(yearT.getText()));
+					TraineeDao.addTraineeInRaf(newTrainee);
+					traineeDao.sortTreeInOrder(raf, trainee, binaryTreeToFile);;
+					obs = FXCollections.observableList(TraineeDao.sortedList);							
+					refresh(obs);
+				}
+			});
+
+			search.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+
 					//traineeDao.getAllSorted();
 					String[] criteriaTab = {lastNameT.getText(), firstNameT.getText(), zipCodeT.getText(), batchT.getText(), yearT.getText()};
 					//ArrayList<Trainee> ListFirstCriteria = new ArrayList<Trainee>();
@@ -274,57 +355,77 @@ public class ViewUI extends Application{
 							traineeDao.searchInList(trainee, i, criteriaTab[i], TraineeDao.Found, TraineeDao.startIdxFound);
 						}
 					}
-//					System.out.println("***********");
-//					for(Long idx:TraineeDao.idxFoundFiltered) {
-//						System.out.println(idx);
-//					}
+					//					System.out.println("***********");
+					//					for(Long idx:TraineeDao.idxFoundFiltered) {
+					//						System.out.println(idx);
+					//					}
 					obs = FXCollections.observableList(TraineeDao.FoundFiltered);
 					refresh(obs);
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+
+
+
 				}
-				
-			}
-		});
-		delete.setOnAction(new EventHandler<ActionEvent>() {
+			});
+			delete.setOnAction(new EventHandler<ActionEvent>() {
 
-			@Override
-			public void handle(ActionEvent event) {
-				setPasswordStage().show();
-				//TODO if adminTf == password, set on action, delete Trainee
-
-			}
-		});
-
-		update.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				setPasswordStage().show();
-				//if adminTf == password, set on action, update trainee
-
-			}
-		});
-		help.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				setHelpStage().show();
-
-			}
-		});
-		
-		reset.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				obs = FXCollections.observableList(TraineeDao.sortedList);
-				refresh(obs);
-			}
-		});
+				@Override
+				public void handle(ActionEvent event) {
 
 
+					String[] criteriaTab = {lastNameT.getText(), firstNameT.getText(), zipCodeT.getText(), batchT.getText(), yearT.getText()};
+
+					int criteria = 0;
+					for(int i = 0; i < criteriaTab.length; i++) {
+						if (!criteriaTab[i].equals("")) {
+							criteria = i;
+							traineeDao.search(raf, trainee, binaryTreeToFile, criteria, criteriaTab[criteria]);
+							break;
+						}
+					}
+					for(int i = criteria; i < criteriaTab.length; i++) {
+						if(!criteriaTab[i].equals("")) {
+							traineeDao.searchInList(trainee, i, criteriaTab[i], TraineeDao.Found, TraineeDao.startIdxFound);
+						}
+					}
+					traineeDao.deleteTraineeInRaf(raf, TraineeDao.idxFoundFiltered.get(0), trainee, binaryTreeToFile);
+					traineeDao.sortTreeInOrder(raf, trainee, binaryTreeToFile);
+					obs = FXCollections.observableList(TraineeDao.sortedList);
+					refresh(obs);
+
+				}
+			});
+
+			update.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					setPasswordStage().show();
+					//if adminTf == password, set on action, update trainee
+
+				}
+			});
+			help.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					setHelpStage().show();
+
+				}
+			});
+
+			reset.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					obs = FXCollections.observableList(TraineeDao.sortedList);
+					refresh(obs);
+				}
+			});
+
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		return topViewLeft;
 	}
 
