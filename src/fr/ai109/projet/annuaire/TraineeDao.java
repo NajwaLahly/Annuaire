@@ -161,7 +161,7 @@ public class TraineeDao {
 	public void deleteTraineeInRaf(RandomAccessFile raf, long postraineeToDelete, Trainee trainee, BinaryTreeToFile binaryTreeToFile) {
 		String[] resultReadTraineeToDelete = new String[2];		
 		String[] resultReadTraineeToDeleteChild = new String[2];	
-		String[] resultReadSuccessor = new String[2];	
+		//String[] resultReadSuccessor = new String[2];	
 		String[] resultReadParentSuccessor = new String[2];	
 
 		try {
@@ -192,8 +192,10 @@ public class TraineeDao {
 
 			else {
 				long traineeToDeleteLeftGrandChildPos = traineeToDeleteRightChildPos; //initialisation diff de 0
-				long successor = 0;
+				long successor = traineeToDeleteLeftChildPos;
+				
 				resultReadTraineeToDeleteChild = binaryTreeToFile.readTraineeInDestFile(raf, traineeToDeleteRightChildPos);//position start de 8
+				String[] resultReadSuccessor = resultReadTraineeToDeleteChild;	
 				while(traineeToDeleteLeftGrandChildPos != 0) {
 					traineeToDeleteLeftGrandChildPos= binaryTreeToFile.readCurrentChildPos(raf, Long.parseLong(resultReadTraineeToDeleteChild[1]),0);//pos start 7.5// pos start 7.3// 0
 
@@ -215,18 +217,21 @@ public class TraineeDao {
 				parentSuccessor = binaryTreeToFile.findParent(successor, raf, trainee);// pos start parent de 7.3 (pos 7.5)
 				resultReadParentSuccessor = binaryTreeToFile.readTraineeInDestFile(raf, parentSuccessor[0]);//pos end 7.5
 
+				//succ = pos start  7.3 //resultReadSuccessor = position end 7.3
+				raf.seek(Long.parseLong(resultatReadParent[1]) + parent[1]);//se mettre à fin du 12
+				raf.writeLong(successor);//ecrire 	pos start 7.3
+				
 				raf.seek(Long.parseLong(resultReadSuccessor[1]));
 				raf.writeLong(traineeToDeleteLeftChildPos);
 				
 				raf.seek(Long.parseLong(resultReadSuccessor[1]) + BinaryTreeToFile.nbreByteToRead);
 				raf.writeLong(traineeToDeleteRightChildPos);
 				
+				if (parentSuccessor[0] != postraineeToDelete) {
 				raf.seek(Long.parseLong(resultReadParentSuccessor[1]) + parentSuccessor[1]);//se mettre ds end pos 7.5
 				raf.writeLong(resultReadSuccessorRightPos);//ecrire pos de 7.4
-				
-				//succ = pos start  7.3 //resultReadSuccessor = position end 7.3
-				raf.seek(Long.parseLong(resultatReadParent[1]) + parent[1]);//se mettre à fin du 12
-				raf.writeLong(successor);//ecrire 	pos start 7.3	
+				}
+					
 
 				
 				
